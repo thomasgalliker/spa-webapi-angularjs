@@ -1,31 +1,27 @@
-﻿using Autofac;
-using Autofac.Core;
+﻿using System.Data.Entity;
+using System.Reflection;
+using System.Web.Http;
+using Autofac;
 using Autofac.Integration.WebApi;
 using HomeCinema.Data;
 using HomeCinema.Data.Infrastructure;
 using HomeCinema.Data.Repositories;
 using HomeCinema.Services;
+using HomeCinema.Services.Abstract;
 using HomeCinema.Web.Infrastructure.Core;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Net.Http;
-using System.Reflection;
-using System.Web;
-using System.Web.Http;
 
 namespace HomeCinema.Web.App_Start
 {
     public class AutofacWebapiConfig
     {
-        public static IContainer Container;
+        private static IContainer container;
+
         public static void Initialize(HttpConfiguration config)
         {
             Initialize(config, RegisterServices(new ContainerBuilder()));
         }
 
-        public static void Initialize(HttpConfiguration config, IContainer container)
+        private static void Initialize(HttpConfiguration config, IContainer container)
         {
             config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
         }
@@ -62,11 +58,12 @@ namespace HomeCinema.Web.App_Start
 
             // Generic Data Repository Factory
             builder.RegisterType<DataRepositoryFactory>()
-                .As<IDataRepositoryFactory>().InstancePerRequest();
+                .As<IDataRepositoryFactory>()
+                .InstancePerRequest();
 
-            Container = builder.Build();
+            container = builder.Build();
 
-            return Container;
+            return container;
         }
     }
 }
