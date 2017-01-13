@@ -1,10 +1,4 @@
 ﻿using HomeCinema.Entities;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HomeCinema.Data.Configurations
 {
@@ -12,8 +6,8 @@ namespace HomeCinema.Data.Configurations
     {
         public UserRoleConfiguration()
         {
-            Property(ur => ur.UserId).IsRequired();
-            Property(ur => ur.RoleId).IsRequired();
+            this.Property(ur => ur.UserId).IsRequired();
+            this.Property(ur => ur.RoleId).IsRequired();
         }
     }
 }
