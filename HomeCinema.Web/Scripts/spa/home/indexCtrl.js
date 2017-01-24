@@ -30,11 +30,11 @@
         }
 
         function genresLoadFailed(response) {
-            notificationService.displayError(response.data);
+            //notificationService.displayError(response.data);
         }
 
         function moviesLoadFailed(response) {
-            notificationService.displayError(response.data);
+            //notificationService.displayError(response.data);
         }
 
         function genresLoadCompleted(result) {

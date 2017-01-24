@@ -6,7 +6,7 @@
 	function availableMovie() {
 		return {
 			restrict: 'E',
-			templateUrl: "/Scripts/spa/directives/availableMovie.html",
+			templateUrl: "./Scripts/spa/directives/availableMovie.html",
 			link: function ($scope, $element, $attrs) {
 				$scope.getAvailableClass = function () {
 					if ($attrs.isAvailable === 'true')

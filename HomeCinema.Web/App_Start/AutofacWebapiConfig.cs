@@ -1,8 +1,10 @@
 ﻿using System.Data.Entity;
 using System.Reflection;
 using System.Web.Http;
+
 using Autofac;
 using Autofac.Integration.WebApi;
+
 using HomeCinema.Data;
 using HomeCinema.Data.Infrastructure;
 using HomeCinema.Data.Repositories;
@@ -10,7 +12,10 @@ using HomeCinema.Services;
 using HomeCinema.Services.Abstract;
 using HomeCinema.Web.Infrastructure.Core;
 
-namespace HomeCinema.Web.App_Start
+using Tracing;
+using Tracing.Integration.Autofac;
+
+namespace HomeCinema.Web
 {
     public class AutofacWebapiConfig
     {
@@ -18,17 +23,15 @@ namespace HomeCinema.Web.App_Start
 
         public static void Initialize(HttpConfiguration config)
         {
-            Initialize(config, RegisterServices(new ContainerBuilder()));
-        }
-
-        private static void Initialize(HttpConfiguration config, IContainer container)
-        {
+            Tracer.SetFactory(new DebugTracerFactory());
+            container = RegisterServices(new ContainerBuilder());
             config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
         }
 
         private static IContainer RegisterServices(ContainerBuilder builder)
         {
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+            builder.RegisterModule(new TracerModule());
 
             // EF HomeCinemaContext
             builder.RegisterType<HomeCinemaContext>()

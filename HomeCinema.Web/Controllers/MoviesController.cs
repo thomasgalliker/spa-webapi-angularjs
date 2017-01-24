@@ -1,64 +1,65 @@
-﻿using AutoMapper;
-using HomeCinema.Data.Infrastructure;
-using HomeCinema.Data.Repositories;
-using HomeCinema.Entities;
-using HomeCinema.Web.Infrastructure.Core;
-using HomeCinema.Web.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+
+using AutoMapper;
+using HomeCinema.Data.Infrastructure;
+using HomeCinema.Data.Repositories;
+using HomeCinema.Entities;
+using HomeCinema.Web.Infrastructure.Core;
 using HomeCinema.Web.Infrastructure.Extensions;
-using HomeCinema.Data.Extensions;
+using HomeCinema.Web.Models;
 
 namespace HomeCinema.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [AuthorizeRole("Admin")]
     [RoutePrefix("api/movies")]
     public class MoviesController : ApiControllerBase
     {
-        private readonly IEntityBaseRepository<Movie> _moviesRepository;
+        private readonly IEntityBaseRepository<Movie> moviesRepository;
 
         public MoviesController(IEntityBaseRepository<Movie> moviesRepository,
-            IEntityBaseRepository<Error> _errorsRepository, IUnitOfWork _unitOfWork)
-            : base(_errorsRepository, _unitOfWork)
+            IEntityBaseRepository<Error> errorsRepository, IUnitOfWork unitOfWork)
+            : base(errorsRepository, unitOfWork)
         {
-            _moviesRepository = moviesRepository;
+            this.moviesRepository = moviesRepository;
         }
 
         [AllowAnonymous]
         [Route("latest")]
         public HttpResponseMessage Get(HttpRequestMessage request)
         {
-            return CreateHttpResponse(request, () =>
+            return this.CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response = null;
-                var movies = _moviesRepository.GetAll().OrderByDescending(m => m.ReleaseDate).Take(6).ToList();
+                var movies = this.moviesRepository.GetAll().OrderByDescending(m => m.ReleaseDate).Take(6).ToList();
 
-                IEnumerable<MovieViewModel> moviesVM = Mapper.Map<IEnumerable<Movie>, IEnumerable<MovieViewModel>>(movies);
+                var moviesVM = Mapper.Map<IEnumerable<Movie>, IEnumerable<MovieViewModel>>(movies);
 
-                response = request.CreateResponse<IEnumerable<MovieViewModel>>(HttpStatusCode.OK, moviesVM);
+                response = request.CreateResponse(HttpStatusCode.OK, moviesVM);
 
                 return response;
             });
         }
 
+        [AuthorizeClaim("movie.read")]
         [Route("details/{id:int}")]
         public HttpResponseMessage Get(HttpRequestMessage request, int id)
         {
-            return CreateHttpResponse(request, () =>
+            //FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+            return this.CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response = null;
-                var movie = _moviesRepository.GetSingle(id);
+                var movie = this.moviesRepository.GetSingle(id);
 
                 MovieViewModel movieVM = Mapper.Map<Movie, MovieViewModel>(movie);
 
-                response = request.CreateResponse<MovieViewModel>(HttpStatusCode.OK, movieVM);
+                response = request.CreateResponse(HttpStatusCode.OK, movieVM);
 
                 return response;
             });
@@ -71,7 +72,7 @@ namespace HomeCinema.Web.Controllers
             int currentPage = page.Value;
             int currentPageSize = pageSize.Value;
 
-            return CreateHttpResponse(request, () =>
+            return this.CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response = null;
                 List<Movie> movies = null;
@@ -79,7 +80,7 @@ namespace HomeCinema.Web.Controllers
 
                 if (!string.IsNullOrEmpty(filter))
                 {
-                    movies = _moviesRepository
+                    movies = this.moviesRepository
                         .FindBy(m => m.Title.ToLower()
                         .Contains(filter.ToLower().Trim()))
                         .OrderBy(m => m.ID)
@@ -87,21 +88,21 @@ namespace HomeCinema.Web.Controllers
                         .Take(currentPageSize)
                         .ToList();
 
-                    totalMovies = _moviesRepository
+                    totalMovies = this.moviesRepository
                         .FindBy(m => m.Title.ToLower()
                         .Contains(filter.ToLower().Trim()))
                         .Count();
                 }
                 else
                 {
-                    movies = _moviesRepository
+                    movies = this.moviesRepository
                         .GetAll()
                         .OrderBy(m => m.ID)
                         .Skip(currentPage * currentPageSize)
                         .Take(currentPageSize)
                         .ToList();
 
-                    totalMovies = _moviesRepository.GetAll().Count();
+                    totalMovies = this.moviesRepository.GetAll().Count();
                 }
 
                 IEnumerable<MovieViewModel> moviesVM = Mapper.Map<IEnumerable<Movie>, IEnumerable<MovieViewModel>>(movies);
@@ -121,16 +122,17 @@ namespace HomeCinema.Web.Controllers
         }
 
         [HttpPost]
+        [AuthorizeClaim("movie.create")]
         [Route("add")]
         public HttpResponseMessage Add(HttpRequestMessage request, MovieViewModel movie)
         {
-            return CreateHttpResponse(request, () =>
+            return this.CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response = null;
 
-                if (!ModelState.IsValid)
+                if (!this.ModelState.IsValid)
                 {
-                    response = request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                    response = request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
                 }
                 else
                 {
@@ -148,9 +150,9 @@ namespace HomeCinema.Web.Controllers
                         newMovie.Stocks.Add(stock);
                     }
 
-                    _moviesRepository.Add(newMovie);
+                    this.moviesRepository.Add(newMovie);
 
-                    _unitOfWork.Commit();
+                    this._unitOfWork.Commit();
 
                     // Update view model
                     movie = Mapper.Map<Movie, MovieViewModel>(newMovie);
@@ -165,26 +167,26 @@ namespace HomeCinema.Web.Controllers
         [Route("update")]
         public HttpResponseMessage Update(HttpRequestMessage request, MovieViewModel movie)
         {
-            return CreateHttpResponse(request, () =>
+            return this.CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response = null;
 
-                if (!ModelState.IsValid)
+                if (!this.ModelState.IsValid)
                 {
-                    response = request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                    response = request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
                 }
                 else
                 {
-                    var movieDb = _moviesRepository.GetSingle(movie.ID);
+                    var movieDb = this.moviesRepository.GetSingle(movie.ID);
                     if (movieDb == null)
                         response = request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid movie.");
                     else
                     {
                         movieDb.UpdateMovie(movie);
                         movie.Image = movieDb.Image;
-                        _moviesRepository.Edit(movieDb);
+                        this.moviesRepository.Edit(movieDb);
 
-                        _unitOfWork.Commit();
+                        this._unitOfWork.Commit();
                         response = request.CreateResponse<MovieViewModel>(HttpStatusCode.OK, movie);
                     }
                 }
@@ -197,11 +199,11 @@ namespace HomeCinema.Web.Controllers
         [Route("images/upload")]
         public HttpResponseMessage Post(HttpRequestMessage request, int movieId)
         {
-            return CreateHttpResponse(request, () =>
+            return this.CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response = null;
 
-                var movieOld = _moviesRepository.GetSingle(movieId);
+                var movieOld = this.moviesRepository.GetSingle(movieId);
                 if (movieOld == null)
                     response = request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid movie.");
                 else
@@ -211,7 +213,7 @@ namespace HomeCinema.Web.Controllers
                     var multipartFormDataStreamProvider = new UploadMultipartFormProvider(uploadPath);
 
                     // Read the MIME multipart asynchronously 
-                    Request.Content.ReadAsMultipartAsync(multipartFormDataStreamProvider);
+                    this.Request.Content.ReadAsMultipartAsync(multipartFormDataStreamProvider);
 
                     string _localFileName = multipartFormDataStreamProvider
                         .FileData.Select(multiPartData => multiPartData.LocalFileName).FirstOrDefault();
@@ -228,8 +230,8 @@ namespace HomeCinema.Web.Controllers
 
                     // update database
                     movieOld.Image = fileUploadResult.FileName;
-                    _moviesRepository.Edit(movieOld);
-                    _unitOfWork.Commit();
+                    this.moviesRepository.Edit(movieOld);
+                    this._unitOfWork.Commit();
 
                     response = request.CreateResponse(HttpStatusCode.OK, fileUploadResult);
                 }

@@ -17,6 +17,7 @@
 
             if($scope.userData.isUserLoggedIn)
             {
+                $scope.userId = $rootScope.repository.loggedUser.userId;
                 $scope.username = $rootScope.repository.loggedUser.username;
             }
         }

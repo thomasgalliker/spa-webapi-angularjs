@@ -41,11 +41,9 @@
             $scope.totalCount = result.data.TotalCount;
             $scope.loadingMovies = false;
 
-            if ($scope.filterMovies && $scope.filterMovies.length)
-            {
+            if ($scope.filterMovies && $scope.filterMovies.length) {
                 notificationService.displayInfo(result.data.Items.length + ' movies found');
             }
-            
         }
 
         function moviesLoadFailed(response) {

@@ -16,7 +16,7 @@
                 <div class="col-xs-12 col-sm-6 col-md-4" ng-repeat="movie in Movies | filter:filterMovies">
                     <div class="media">
                         <a class="pull-left" ng-href="#/movies/{{movie.ID}}" title="View {{movie.Title}} details">
-                            <img class="media-object" height="120" ng-src="../../Content/images/movies/{{movie.Image}}" alt="" />
+                            <img class="media-object" height="120" ng-src="./Content/images/movies/{{movie.Image}}" alt="" />
                         </a>
                         <div class="media-body">
                             <h4 class="media-heading">{{movie.Title}}</h4>

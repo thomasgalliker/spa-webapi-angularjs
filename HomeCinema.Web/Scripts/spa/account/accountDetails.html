@@ -1,0 +1,31 @@
+﻿<hr />
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-primary" id="panelAccountDetails">
+            <div class="panel-heading">
+                <h3 class="panel-title">Account Details</h3>
+            </div>
+
+            <div class="panel-body">
+                <div ng-if="isLoading">
+                    <div class="col-xs-4"></div>
+                    <div class="col-xs-4">
+                        <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading...</label>
+                    </div>
+                    <div class="col-xs-4"></div>
+                </div>
+                <div class="account-details-body">
+                    User name: <strong>{{vm.Username}}</strong><br />
+                    Email: <strong>{{vm.Email}}</strong><br />
+                    Roles: <div ng-repeat="role in vm.Roles">
+                        <strong>{{role}}</strong>
+                    </div>
+
+                    Claims: <div ng-repeat="claim in vm.Claims">
+                        <strong>{{claim}}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

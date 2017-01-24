@@ -1,13 +1,7 @@
-﻿using HomeCinema.Data.Configurations;
-using HomeCinema.Entities;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Data.Entity.Validation;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HomeCinema.Data.Configurations;
+using HomeCinema.Entities;
 
 namespace HomeCinema.Data
 {
@@ -23,6 +17,10 @@ namespace HomeCinema.Data
         public IDbSet<User> UserSet { get; set; }
         public IDbSet<Role> RoleSet { get; set; }
         public IDbSet<UserRole> UserRoleSet { get; set; }
+
+        public IDbSet<RoleClaim> RoleClaimSet { get; set; }
+        public IDbSet<Claim> ClaimSet { get; set; }
+
         public IDbSet<Customer> CustomerSet { get; set; }
         public IDbSet<Movie> MovieSet { get; set; }
         public IDbSet<Genre> GenreSet { get; set; }
@@ -39,6 +37,8 @@ namespace HomeCinema.Data
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
+            modelBuilder.Configurations.Add(new ClaimConfiguration());
+            modelBuilder.Configurations.Add(new RoleClaimConfiguration());
             modelBuilder.Configurations.Add(new UserConfiguration());
             modelBuilder.Configurations.Add(new UserRoleConfiguration());
             modelBuilder.Configurations.Add(new RoleConfiguration());

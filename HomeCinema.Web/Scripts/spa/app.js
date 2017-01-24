@@ -12,13 +12,40 @@
                 templateUrl: "scripts/spa/home/index.html",
                 controller: "indexCtrl"
             })
+            .when("/#", {
+                    })
+            .when('/error/403',
+            {
+                templateUrl: 'scripts/spa/errors/error403.html'
+            })
+            .when('/error/404',
+            {
+                templateUrl: 'scripts/spa/errors/error404.html'
+            })
+            .when('/error/500',
+            {
+                templateUrl: 'scripts/spa/errors/error500.html'
+            })
+            .when("/about", {
+                templateUrl: "scripts/spa/home/about.html",
+                controller: "aboutCtrl"
+            })
             .when("/login", {
                 templateUrl: "scripts/spa/account/login.html",
                 controller: "loginCtrl"
             })
-            .when("/register", {
+            .when("/account/register", {
                 templateUrl: "scripts/spa/account/register.html",
                 controller: "registerCtrl"
+            })
+            .when("/account/edit/:id/", {
+                templateUrl: "scripts/spa/account/accountDetails.html",
+                controller: "accountDetailsCtrl",
+                resolve: { isAuthenticated: isAuthenticated }
+            })
+            .when("/account/users", {
+                templateUrl: "scripts/spa/account/users.html",
+                controller: "usersCtrl"
             })
             .when("/customers", {
                 templateUrl: "scripts/spa/customers/customers.html",

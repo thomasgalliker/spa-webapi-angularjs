@@ -15,9 +15,9 @@
         }
 
         function loginCompleted(result) {
-            if (result.data.success) {
-                membershipService.saveCredentials($scope.user);
-                notificationService.displaySuccess('Hello ' + $scope.user.username);
+            if (result.data.Success) {
+                membershipService.saveCredentials($scope.user, result.data.UserId);
+                notificationService.displaySuccess('Hello ' + $scope.user.username, "Login successful");
                 $scope.userData.displayUserInfo();
                 if ($rootScope.previousState)
                     $location.path($rootScope.previousState);

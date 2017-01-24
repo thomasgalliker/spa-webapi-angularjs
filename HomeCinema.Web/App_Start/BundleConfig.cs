@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace HomeCinema.Web.App_Start
 {
@@ -40,6 +36,7 @@ namespace HomeCinema.Web.App_Start
                 "~/Scripts/spa/modules/common.ui.js",
                 "~/Scripts/spa/app.js",
                 "~/Scripts/spa/services/apiService.js",
+                "~/Scripts/spa/services/responseErrorHttpInterceptor.js",
                 "~/Scripts/spa/services/notificationService.js",
                 "~/Scripts/spa/services/membershipService.js",
                 "~/Scripts/spa/services/fileUploadService.js",
@@ -48,10 +45,14 @@ namespace HomeCinema.Web.App_Start
                 "~/Scripts/spa/layout/customPager.directive.js",
                 "~/Scripts/spa/directives/rating.directive.js",
                 "~/Scripts/spa/directives/availableMovie.directive.js",
+                "~/Scripts/spa/directives/userStatus.directive.js",
                 "~/Scripts/spa/account/loginCtrl.js",
                 "~/Scripts/spa/account/registerCtrl.js",
+                "~/Scripts/spa/account/accountDetailsCtrl.js",
+                "~/Scripts/spa/account/usersCtrl.js",
                 "~/Scripts/spa/home/rootCtrl.js",
                 "~/Scripts/spa/home/indexCtrl.js",
+                "~/Scripts/spa/home/aboutCtrl.js",
                 "~/Scripts/spa/customers/customersCtrl.js",
                 "~/Scripts/spa/customers/customersRegCtrl.js",
                 "~/Scripts/spa/customers/customerEditCtrl.js",

@@ -1,0 +1,25 @@
+﻿<hr />
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-primary" id="panelAbout">
+            <div class="panel-heading">
+                <h3 class="panel-title">About</h3>
+            </div>
+
+            <div class="panel-body">
+                <div ng-if="isLoading">
+                    <div class="col-xs-4"></div>
+                    <div class="col-xs-4">
+                        <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading...</label>
+                    </div>
+                    <div class="col-xs-4"></div>
+                </div>
+                <div class="about-body">
+                    Version: <strong>{{vm.Version}}</strong><br />
+                    MigrationState: <strong>{{vm.MigrationState}}</strong><br />
+                </div>
+                <button class="btn btn-primary" ng-click="simmulateCrash();">Simmulate Exception in ApiController</button>
+            </div>
+        </div>
+    </div>
+</div>

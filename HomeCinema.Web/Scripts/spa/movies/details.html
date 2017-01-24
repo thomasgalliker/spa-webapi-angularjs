@@ -1,7 +1,7 @@
 ﻿<hr />
 <div class="jumbotron">
     <div class="container text-center">
-        <img alt="{{movie.Title}}" ng-src="../../../Content/images/movies/{{movie.Image}}" class="pull-left" height="120" />
+        <img alt="{{movie.Title}}" ng-src=".././Content/images/movies/{{movie.Image}}" class="pull-left" height="120" />
         <div class="movieDescription"><i><i class="fa fa-quote-left"></i>{{movie.Description}}<i class="fa fa-quote-right"></i></i></div>
         <br />
         <div class="btn-group">
@@ -20,7 +20,7 @@
             <div class="panel-body" ng-if="!loadingMovie">
                 <div class="media">
                     <a class="pull-right" ng-href="#/movies/{{movie.ID}}" title="View {{movie.Title}} details">
-                        <img class="media-object" height="120" ng-src="../../Content/images/movies/{{movie.Image}}" alt="" />
+                        <img class="media-object" height="120" ng-src="./Content/images/movies/{{movie.Image}}" alt="" />
                     </a>
                     <div class="media-body">
                         <h4 class="media-heading">{{movie.Title}}</h4>

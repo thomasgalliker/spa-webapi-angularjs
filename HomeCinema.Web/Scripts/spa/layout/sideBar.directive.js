@@ -7,7 +7,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: '/scripts/spa/layout/sideBar.html'
+            templateUrl: './scripts/spa/layout/sideBar.html'
         }
     }
 

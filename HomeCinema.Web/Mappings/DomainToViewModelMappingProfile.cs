@@ -1,10 +1,7 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using HomeCinema.Entities;
 using HomeCinema.Web.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace HomeCinema.Web.Mappings
 {
@@ -25,13 +22,19 @@ namespace HomeCinema.Web.Mappings
                 .ForMember(vm => vm.Image, map => map.MapFrom(m => string.IsNullOrEmpty(m.Image) == true ? "unknown.jpg" : m.Image));
 
             Mapper.CreateMap<Genre, GenreViewModel>()
-                .ForMember(vm => vm.NumberOfMovies, map => map.MapFrom(g => g.Movies.Count()));
+                .ForMember(vm => vm.NumberOfMovies, map => map.MapFrom(g => g.Movies.Count));
             // code omitted
             Mapper.CreateMap<Customer, CustomerViewModel>();
 
             Mapper.CreateMap<Stock, StockViewModel>();
 
             Mapper.CreateMap<Rental, RentalViewModel>();
+
+            Mapper.CreateMap<User, UserViewModel>()
+                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.ID))
+                .ForMember(dest => dest.Username, map => map.MapFrom(src => src.Username))
+                .ForMember(dest => dest.Email, map => map.MapFrom(src => src.Email))
+                .ForMember(dest => dest.IsLocked, map => map.MapFrom(src => src.IsLocked));
         }
     }
 }

@@ -1,0 +1,82 @@
+﻿<hr />
+<div class="row">
+    <div id="MainContent_UpdatePanel1">
+
+        <div ng-if="isLoading">
+            <div class="col-xs-4"></div>
+            <div class="col-xs-4">
+                <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading...</label>
+            </div>
+            <div class="col-xs-4"></div>
+        </div>
+
+        <div align="right">
+            <a ng-href="#/acccount/user/add" class="btn btn-primary">
+                <i class="fa fa-plus"></i>Add User
+            </a>
+        </div>
+
+        <form>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                    <input type="text" class="form-control" placeholder="Search" ng-model="searchUser">
+                </div>
+            </div>
+        </form>
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <td>
+                        <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+                            Username
+                            <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" ng-click="sortType = 'fish'; sortReverse = !sortReverse">
+                            Email
+                            <span ng-show="sortType == 'fish' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'fish' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" ng-click="sortType = 'tastiness'; sortReverse = !sortReverse">
+                            Status
+                            <span ng-show="sortType == 'tastiness' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'tastiness' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" ng-click="sortType = 'xxx'; sortReverse = !sortReverse">
+                            Actions
+                            <span ng-show="sortType == 'xxx' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'xxx' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </td>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr ng-repeat="user in vm.Users | orderBy:sortType:sortReverse | filter:searchUser">
+                    <td>{{ user.Username }}</td>
+                    <td>{{ user.Email }}</td>
+
+                    <td><user-status is-locked="{{user.IsLocked}}" /></td>
+
+                    <td class="tooltip-demo" style="align-content: center; width:200px">
+                        <a id="MainContent_gvUser_HyperLinkUserLog_0" class="btn btn-warning btn-circle" data-toggle="tooltip" data-placement="top" title="User Logs" ng-href="#/account/edit/{{user.Id}}"><i class="fa fa-list"></i></a>
+                        <a id="MainContent_gvUser_HyperLinkUserDetail_0" class="btn btn-warning btn-circle" data-toggle="tooltip" data-placement="top" title="User Details" href="#/account/edit/{{user.Id}}"><i class="fa fa-eye"></i></a>
+                        <a id="MainContent_gvUser_HyperLinkEdit_0" class="btn btn-warning btn-circle" data-toggle="tooltip" data-placement="top" title="Edit User" href="#/account/edit/{{user.Id}}"><i class="fa fa-edit"></i></a>
+                        <a id="MainContent_gvUser_LinkButtonDelete_0" class="btn btn-danger btn-circle" data-toggle="tooltip" data-placement="top" title="Delete User" href="#/account/delete/{{user.Id}}"><i class="fa fa-times"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->

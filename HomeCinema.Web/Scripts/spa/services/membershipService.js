@@ -27,11 +27,12 @@
             registrationFailed);
         }
 
-        function saveCredentials(user) {
+        function saveCredentials(user, userId) {
             var membershipData = $base64.encode(user.username + ':' + user.password);
 
             $rootScope.repository = {
                 loggedUser: {
+                    userId : userId,
                     username: user.username,
                     authdata: membershipData
                 }

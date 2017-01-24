@@ -8,59 +8,47 @@ using HomeCinema.Data.Infrastructure;
 using HomeCinema.Data.Repositories;
 using HomeCinema.Entities;
 
+using Tracing;
+
 namespace HomeCinema.Web.Infrastructure.Core
 {
     public class ApiControllerBase : ApiController
     {
-        protected readonly IEntityBaseRepository<Error> _errorsRepository;
-        protected readonly IUnitOfWork _unitOfWork;
+        protected readonly ITracer Tracer;
+        public readonly IUnitOfWork _unitOfWork;
 
+        [Obsolete]
         public ApiControllerBase(IEntityBaseRepository<Error> errorsRepository, IUnitOfWork unitOfWork)
         {
-            this._errorsRepository = errorsRepository;
-            this._unitOfWork = unitOfWork;
         }
 
-        public ApiControllerBase(IDataRepositoryFactory dataRepositoryFactory, IEntityBaseRepository<Error> errorsRepository, IUnitOfWork unitOfWork)
+        public ApiControllerBase(ITracer tracer)
         {
-            this._errorsRepository = errorsRepository;
-            this._unitOfWork = unitOfWork;
+            this.Tracer = tracer;
         }
 
         protected HttpResponseMessage CreateHttpResponse(HttpRequestMessage request, Func<HttpResponseMessage> function)
         {
-            HttpResponseMessage response = null;
+            HttpResponseMessage response;
 
             try
             {
-                response = function.Invoke();
+                response = function();
             }
             catch (DbUpdateException ex)
             {
-                this.LogError(ex);
-                response = request.CreateResponse(HttpStatusCode.BadRequest, ex.InnerException.Message);
+                this.Tracer.Exception(ex);
+
+                response = request.CreateResponse(HttpStatusCode.BadRequest, ex.InnerException?.Message);
             }
             catch (Exception ex)
             {
-                this.LogError(ex);
+                this.Tracer.Exception(ex);
+                
                 response = request.CreateResponse(HttpStatusCode.InternalServerError, ex);
             }
 
             return response;
-        }
-
-        private void LogError(Exception ex)
-        {
-            try
-            {
-                var error = new Error { Message = ex.Message, StackTrace = ex.StackTrace, DateCreated = DateTime.Now };
-
-                this._errorsRepository.Add(error);
-                this._unitOfWork.Commit();
-            }
-            catch
-            {
-            }
         }
     }
 }

@@ -6,6 +6,8 @@
     function notificationService() {
 
         toastr.options = {
+            "closeButton": true,
+            "preventDuplicates": true,
             "debug": false,
             "positionClass": "toast-top-right",
             "onclick": null,
@@ -24,17 +26,30 @@
 
         return service;
 
-        function displaySuccess(message) {
-            toastr.success(message);
+        function displaySuccess(message, title) {
+
+            if (title === undefined) {
+                toastr.success(message);
+            } else {
+                toastr.success(message, title);
+            }
         }
 
-        function displayError(error) {
-            if (Array.isArray(error)) {
-                error.forEach(function (err) {
-                    toastr.error(err);
+        function displayError(title, message) {
+
+            var optionsOverride = {
+                "fadeIn": 60,
+                "fadeOut": 60,
+                "timeOut": 30000,
+                "extendedTimeOut": 30000
+            };
+
+            if (Array.isArray(title)) {
+                title.forEach(function (err) {
+                    toastr.error(err, "", optionsOverride);
                 });
             } else {
-                toastr.error(error);
+                toastr.error(message, title, optionsOverride);
             }
         }
 
@@ -43,6 +58,7 @@
         }
 
         function displayInfo(message) {
+            toastr.clear();
             toastr.info(message);
         }
 

@@ -70,7 +70,7 @@
         }
 
         function movieLoadFailed(response) {
-            notificationService.displayError(response.data);
+            //notificationService.displayError(response.data);
         }
 
         function rentalHistoryLoadCompleted(result) {
@@ -80,7 +80,7 @@
         }
 
         function rentalHistoryLoadFailed(response) {
-            notificationService.displayError(response);
+            //notificationService.displayError(response);
         }
 
         function returnMovieSucceeded(response) {
@@ -89,7 +89,7 @@
         }
 
         function returnMovieFailed(response) {
-            notificationService.displayError(response.data);
+            //notificationService.displayError(response.data);
         }
 
         function openRentDialog() {

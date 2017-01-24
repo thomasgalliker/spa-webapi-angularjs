@@ -1,20 +1,20 @@
-﻿using AutoMapper;
-using HomeCinema.Data.Infrastructure;
-using HomeCinema.Data.Repositories;
-using HomeCinema.Entities;
-using HomeCinema.Web.Infrastructure.Core;
-using HomeCinema.Web.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using AutoMapper;
 using HomeCinema.Data.Extensions;
+using HomeCinema.Data.Infrastructure;
+using HomeCinema.Data.Repositories;
+using HomeCinema.Entities;
+using HomeCinema.Web.Infrastructure.Core;
+using HomeCinema.Web.Models;
 
 namespace HomeCinema.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [AuthorizeRole("Admin")]
     [RoutePrefix("api/rentals")]
     public class RentalsController : ApiControllerBase
     {
@@ -36,6 +36,7 @@ namespace HomeCinema.Web.Controllers
         }
 
         [HttpPost]
+        [AuthorizeClaim("movie.rent")]
         [Route("rent/{customerId:int}/{stockId:int}")]
         public HttpResponseMessage Rent(HttpRequestMessage request, int customerId, int stockId)
         {
@@ -81,6 +82,7 @@ namespace HomeCinema.Web.Controllers
         }
 
         [HttpPost]
+        [AuthorizeClaim("movie.rent")]
         [Route("return/{rentalId:int}")]
         public HttpResponseMessage Return(HttpRequestMessage request, int rentalId)
         {
@@ -200,7 +202,7 @@ namespace HomeCinema.Web.Controllers
                 foreach (var distinctDate in _distinctDates)
                 {
                     var totalDateRentals = _rentalHistory.Count(r => r.RentalDate.Date == distinctDate);
-                    RentalHistoryPerDate _movieRentalHistoryPerDate = new RentalHistoryPerDate()
+                    var _movieRentalHistoryPerDate = new RentalHistoryPerDate
                     {
                         Date = distinctDate,
                         TotalRentals = totalDateRentals

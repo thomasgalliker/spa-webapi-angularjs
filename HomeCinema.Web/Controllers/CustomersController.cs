@@ -1,21 +1,21 @@
-﻿using AutoMapper;
-using HomeCinema.Data.Infrastructure;
-using HomeCinema.Data.Repositories;
-using HomeCinema.Entities;
-using HomeCinema.Web.Infrastructure.Core;
-using HomeCinema.Web.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using HomeCinema.Web.Infrastructure.Extensions;
+using AutoMapper;
 using HomeCinema.Data.Extensions;
+using HomeCinema.Data.Infrastructure;
+using HomeCinema.Data.Repositories;
+using HomeCinema.Entities;
+using HomeCinema.Web.Infrastructure.Core;
+using HomeCinema.Web.Infrastructure.Extensions;
+using HomeCinema.Web.Models;
 
 namespace HomeCinema.Web.Controllers
 {
-    [Authorize(Roles="Admin")]
+    [AuthorizeRole("Admin")]
     [RoutePrefix("api/customers")]
     public class CustomersController : ApiControllerBase
     {
