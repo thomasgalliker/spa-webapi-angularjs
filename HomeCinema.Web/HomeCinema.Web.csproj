@@ -181,6 +181,7 @@
     <Content Include="Scripts\spa\directives\userStatus.html" />
     <Content Include="Scripts\spa\directives\userStatus.directive.js" />
     <Content Include="Scripts\spa\directives\availableMovie.html" />
+    <Content Include="Scripts\spa\errors\error400.html" />
     <Content Include="Scripts\spa\errors\error404.html" />
     <Content Include="Scripts\spa\errors\error500.html" />
     <Content Include="Scripts\spa\home\about.html" />
