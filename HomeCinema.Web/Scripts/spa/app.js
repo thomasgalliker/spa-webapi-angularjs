@@ -13,7 +13,11 @@
                 controller: "indexCtrl"
             })
             .when("/#", {
-                    })
+            })
+            .when('/error/400',
+            {
+                templateUrl: 'scripts/spa/errors/error400.html'
+            })
             .when('/error/403',
             {
                 templateUrl: 'scripts/spa/errors/error403.html'

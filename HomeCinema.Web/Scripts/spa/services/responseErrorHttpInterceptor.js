@@ -25,17 +25,11 @@
                         $rootScope.previousState = $location.path();
                         $location.path('/login');
                     }
-                    else if (httpResponse.status === 403) {
+                    else if (httpResponse.status === 400 || httpResponse.status === 403 || httpResponse.status === 404) {
                         $rootScope = $injector.get('$rootScope');
                         $location = $injector.get('$location');
                         $rootScope.previousState = $location.path();
-                        $location.path('/error/403');
-                    }
-                    else if (httpResponse.status === 404) {
-                        $rootScope = $injector.get('$rootScope');
-                        $location = $injector.get('$location');
-                        $rootScope.previousState = $location.path();
-                        $location.path('/error/404');
+                        $location.path('/error/' + httpResponse.status);
                     }
                     else if (httpResponse.status === 500) {
                         title = httpResponse.statusText;
