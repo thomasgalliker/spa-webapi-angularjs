@@ -1,11 +1,14 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+
+using EntityFramework.Toolkit;
+
 using HomeCinema.Data.Configurations;
 using HomeCinema.Entities;
 
 namespace HomeCinema.Data
 {
-    public class HomeCinemaContext : DbContext
+    public class HomeCinemaContext : DbContextBase<HomeCinemaContext>, IHomeCinemaContext
     {
         public HomeCinemaContext()
             : base("HomeCinema")
