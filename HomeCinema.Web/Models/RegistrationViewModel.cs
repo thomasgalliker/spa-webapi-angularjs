@@ -1,13 +1,12 @@
-﻿using HomeCinema.Web.Infrastructure.Validators;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
+
+using HomeCinema.Web.Infrastructure.Validators;
 
 namespace HomeCinema.Web.Models
 {
-    public class RegistrationViewModel : IValidatableObject
+    public class RegistrationViewModel :  IValidatableObject
     {
         public string Username { get; set; }
         public string Password { get; set; }
