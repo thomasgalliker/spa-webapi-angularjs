@@ -35,7 +35,7 @@
             }
         }
 
-        function displayError(title, message) {
+        function displayError(message, title) {
 
             var optionsOverride = {
                 "fadeIn": 60,
@@ -44,10 +44,8 @@
                 "extendedTimeOut": 30000
             };
 
-            if (Array.isArray(title)) {
-                title.forEach(function (err) {
-                    toastr.error(err, "", optionsOverride);
-                });
+            if (title === undefined) {
+                toastr.error(message, "", optionsOverride);
             } else {
                 toastr.error(message, title, optionsOverride);
             }
