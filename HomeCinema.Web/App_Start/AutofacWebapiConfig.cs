@@ -7,6 +7,7 @@ using Autofac.Integration.WebApi;
 
 using HomeCinema.Data;
 using HomeCinema.Data.Infrastructure;
+using HomeCinema.Data.Modularity;
 using HomeCinema.Data.Repositories;
 using HomeCinema.Services;
 using HomeCinema.Services.Abstract;
@@ -14,6 +15,9 @@ using HomeCinema.Web.Infrastructure.Core;
 
 using Tracing;
 using Tracing.Integration.Autofac;
+
+using IUnitOfWork = HomeCinema.Data.Infrastructure.IUnitOfWork;
+using UnitOfWork = HomeCinema.Data.Infrastructure.UnitOfWork;
 
 namespace HomeCinema.Web
 {
@@ -32,17 +36,18 @@ namespace HomeCinema.Web
         {
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             builder.RegisterModule(new TracerModule());
+            builder.RegisterModule(new DataModule());
 
             // EF HomeCinemaContext
-            builder.RegisterType<HomeCinemaContext>()
+            builder.RegisterType<HomeCinemaContext>() // TODO Move to Data layer
                    .As<DbContext>()
                    .InstancePerRequest();
 
-            builder.RegisterType<DbFactory>()
+            builder.RegisterType<DbFactory>() // TODO Move to Data layer
                 .As<IDbFactory>()
                 .InstancePerRequest();
 
-            builder.RegisterType<UnitOfWork>()
+            builder.RegisterType<UnitOfWork>() // TODO Move to Data layer
                 .As<IUnitOfWork>()
                 .InstancePerRequest();
 

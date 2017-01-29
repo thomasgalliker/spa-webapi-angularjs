@@ -1,30 +1,83 @@
 ﻿<hr />
 <div class="row">
-    <div class="col-md-4">
-        <div class="panel panel-primary" id="panelAccountDetails">
-            <div class="panel-heading">
-                <h3 class="panel-title">Account Details</h3>
-            </div>
+    <div ng-if="isLoading">
+        <div class="col-xs-4"></div>
+        <div class="col-xs-4">
+            <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading...</label>
+        </div>
+        <div class="col-xs-4"></div>
+    </div>
 
+    <!-- Main Content-->
+    <div class="col-lg-9" ng-hide="isLoading">
+        <div class="panel panel-default">
             <div class="panel-body">
-                <div ng-if="isLoading">
-                    <div class="col-xs-4"></div>
-                    <div class="col-xs-4">
-                        <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading...</label>
+                <form action="">
+                    <p class="lead">{{IsAdding ? 'Add New User' : 'Edit User'}}</p>
+                    <div class="form-group">
+                        <p>Username</p>
+                        <input type="text" placeholder="Username" class="form-control" ng-readonly="!IsAdding" ng-model="vm.Username"/>
                     </div>
-                    <div class="col-xs-4"></div>
-                </div>
-                <div class="account-details-body">
-                    User name: <strong>{{vm.Username}}</strong><br />
-                    Email: <strong>{{vm.Email}}</strong><br />
-                    Roles: <div ng-repeat="role in vm.Roles">
-                        <strong>{{role}}</strong>
+                    <div class="form-group">
+                        <p>Email</p>
+                        <input type="text" placeholder="Username" class="form-control" ng-model="vm.Email"/>
+                    </div>
+                    <div class="form-group">
+                        <p>First Name</p>
+                        <input type="text" placeholder="First Name" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <p>Last Name</p>
+                        <input type="text" placeholder="Last Name" class="form-control"/>
                     </div>
 
-                    Claims: <div ng-repeat="claim in vm.Claims">
-                        <strong>{{claim}}</strong>
+
+                    <div class="form-group">
+                        <p>Roles</p>
+                        <div ng-repeat="role in AllRoles">
+                            <input type="checkbox" ng-checked="vm.Roles.containsObjectWithProperty('Id', role.Id)" ng-click="toggleSelection(role)"/>
+                            {{role.Name}}
+                        </div>
                     </div>
-                </div>
+
+                    <div class="form-group">
+                        <p>Claims</p>
+                        <div ng-repeat="claim in vm.Claims">
+                            <input type="checkbox" ng-checked="claim" ng-model="claim">{{claim}}
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                        <div class="pull-right">
+                            <!--<button type="button" class="btn btn-default m-r-10 m-t-10">
+                                <em class="fa fa-edit fa-fw"></em>Edit
+                            </button>-->
+                            <button type="button" class="btn btn-primary m-t-10" ng-hide="IsAdding" ng-click="saveAccount()">
+                                <em class="fa fa-check fa-fw"></em>Save
+                            </button>
+                            
+                            <button type="button" class="btn btn-primary m-t-10" ng-show="IsAdding" ng-click="addAccount()">
+                                <em class="fa fa-check fa-fw"></em>Add User
+                            </button>
+                        </div>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-danger m-r-10 m-t-10" ng-hide="IsAdding" ng-click="deleteAccount()">
+                                <em class="fa fa-trash fa-fw"></em>Remove
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Sidebar-->
+    <div class="col-lg-3">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <p class="lead">Sidebar</p>
+                <p>Categories...</p>
+                
+
             </div>
         </div>
     </div>

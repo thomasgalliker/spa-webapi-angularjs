@@ -16,5 +16,13 @@ namespace HomeCinema.Services.Abstract
         ICollection<User> GetUsers();
 
         List<Role> GetUserRoles(string username);
+
+        ICollection<Role> GetRoles();
+
+        void UpdateUser(User user, User updateUser);
+
+        bool IsExistingUser(int userId);
+
+        void DeleteUser(User user);
     }
 }

@@ -24,7 +24,6 @@ namespace HomeCinema.Web
             config.MessageHandlers.Add(new MessageLoggingHandler());
 
             config.Filters.Add(new ValidateModelAttribute());
-            //config.Filters.Add(new ClaimsFilter());
 
             config.Services.Replace(typeof(IExceptionHandler), new ApiExceptionHandler());
             config.Services.Add(typeof(IExceptionLogger), new ApiExceptionLogger());

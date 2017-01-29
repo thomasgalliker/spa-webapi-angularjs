@@ -11,7 +11,7 @@
         </div>
 
         <div align="right">
-            <a ng-href="#/acccount/user/add" class="btn btn-primary">
+            <a ng-href="#/acccount/add" class="btn btn-primary">
                 <i class="fa fa-plus"></i>Add User
             </a>
         </div>
@@ -67,10 +67,8 @@
                     <td><user-status is-locked="{{user.IsLocked}}" /></td>
 
                     <td class="tooltip-demo" style="align-content: center; width:200px">
-                        <a id="MainContent_gvUser_HyperLinkUserLog_0" class="btn btn-warning btn-circle" data-toggle="tooltip" data-placement="top" title="User Logs" ng-href="#/account/edit/{{user.Id}}"><i class="fa fa-list"></i></a>
-                        <a id="MainContent_gvUser_HyperLinkUserDetail_0" class="btn btn-warning btn-circle" data-toggle="tooltip" data-placement="top" title="User Details" href="#/account/edit/{{user.Id}}"><i class="fa fa-eye"></i></a>
-                        <a id="MainContent_gvUser_HyperLinkEdit_0" class="btn btn-warning btn-circle" data-toggle="tooltip" data-placement="top" title="Edit User" href="#/account/edit/{{user.Id}}"><i class="fa fa-edit"></i></a>
-                        <a id="MainContent_gvUser_LinkButtonDelete_0" class="btn btn-danger btn-circle" data-toggle="tooltip" data-placement="top" title="Delete User" href="#/account/delete/{{user.Id}}"><i class="fa fa-times"></i></a>
+                        <a class="btn btn-default btn-circle" data-toggle="tooltip" data-placement="top" title="Edit User" ng-href="#/account/edit/{{user.Id}}"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-danger btn-circle" data-toggle="tooltip" data-placement="top" title="Delete User" ng-click="deleteUser(user.Id);"><i class="fa fa-times"></i></a>
                     </td>
                 </tr>
             </tbody>

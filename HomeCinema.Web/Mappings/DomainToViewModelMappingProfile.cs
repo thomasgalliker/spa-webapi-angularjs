@@ -34,7 +34,32 @@ namespace HomeCinema.Web.Mappings
                 .ForMember(dest => dest.Id, map => map.MapFrom(src => src.ID))
                 .ForMember(dest => dest.Username, map => map.MapFrom(src => src.Username))
                 .ForMember(dest => dest.Email, map => map.MapFrom(src => src.Email))
-                .ForMember(dest => dest.IsLocked, map => map.MapFrom(src => src.IsLocked));
+                .ForMember(dest => dest.IsLocked, map => map.MapFrom(src => src.IsLocked))
+                .ReverseMap()
+                .ForMember(dest => dest.ID, map => map.MapFrom(src => src.Id))
+                ;
+
+            Mapper.CreateMap<Claim, ClaimViewModel>()
+                  .ForMember(dest => dest.Id, map => map.MapFrom(src => src.ID))
+                  .ForMember(dest => dest.ClaimType, map => map.MapFrom(src => src.ClaimType))
+                  .ForMember(dest => dest.ClaimValue, map => map.MapFrom(src => src.ClaimValue))
+                  ;
+
+            Mapper.CreateMap<User, UserDetailViewModel>()
+                .IncludeBase<User, UserViewModel>()
+                .ForMember(dest => dest.Roles, map => map.MapFrom(src => src.UserRoles.Select(ur => ur.Role)))
+                .ForMember(dest => dest.Claims, map => map.MapFrom(src => src.UserRoles.Select(ur => ur.Role).SelectMany(r => r.RoleClaims.Select(rc => rc.Claim))))
+                ;
+
+            Mapper.CreateMap<UserDetailViewModel, User>()
+               .IncludeBase<UserViewModel, User>()
+               .ForMember(dest => dest.UserRoles, map => map.MapFrom(src => src.Roles.Select(r => new UserRole { RoleId = r.Id })))
+               ;
+
+            Mapper.CreateMap<Role, RoleViewModel>()
+                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.ID))
+                .ForMember(dest => dest.Name, map => map.MapFrom(src => src.Name))
+                ;
         }
     }
 }

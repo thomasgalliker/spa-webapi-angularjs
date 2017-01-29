@@ -19,7 +19,7 @@
                                   "<br/><b>Message: </b>Log in <a href=\"#\login\"\">here</a> to get authenticated." +
                                   "<br/><br/>";
 
-                        notificationService.displayError(title, message);
+                        notificationService.displayError(message, title);
                         $rootScope = $injector.get('$rootScope');
                         $location = $injector.get('$location');
                         $rootScope.previousState = $location.path();
@@ -39,7 +39,7 @@
                             "<br/>Message: <b> " + httpResponse.data.Message + "</b>" +
                             "<br/><br/>Check the <a href=\"#\logviewer\"\">error logs</a> for further information." +
                             "</small>";
-                        notificationService.displayError(title, message);
+                        notificationService.displayError(message, title);
                         $rootScope = $injector.get('$rootScope');
                         $location = $injector.get('$location');
                         $rootScope.previousState = $location.path();

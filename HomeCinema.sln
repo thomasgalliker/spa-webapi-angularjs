@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeCinema.Entities", "HomeCinema.Entities\HomeCinema.Entities.csproj", "{3E8BB046-05BD-4D27-94A7-C13AD4F3E192}"
 EndProject
@@ -17,6 +17,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{994CCF
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{88134BDB-19CF-4F4E-909D-37FA6A54C591}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeCinema.Web.Tests", "Tests\HomeCinema.Web.Tests\HomeCinema.Web.Tests.csproj", "{D4A843BC-2E05-412E-AD41-BA656BD5E99A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeCinema.Data.Tests", "Tests\HomeCinema.Data.Tests\HomeCinema.Data.Tests.csproj", "{7B644B11-835E-4780-8936-E2DE0784FD77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeCinema.Contracts", "HomeCinema.Contracts\HomeCinema.Contracts.csproj", "{D3F057B1-3EF7-4C53-A975-A970E6953E16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,8 +48,24 @@ Global
 		{32415527-525D-490D-8B46-7BA4C3D45F7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32415527-525D-490D-8B46-7BA4C3D45F7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32415527-525D-490D-8B46-7BA4C3D45F7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4A843BC-2E05-412E-AD41-BA656BD5E99A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4A843BC-2E05-412E-AD41-BA656BD5E99A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4A843BC-2E05-412E-AD41-BA656BD5E99A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4A843BC-2E05-412E-AD41-BA656BD5E99A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B644B11-835E-4780-8936-E2DE0784FD77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B644B11-835E-4780-8936-E2DE0784FD77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B644B11-835E-4780-8936-E2DE0784FD77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B644B11-835E-4780-8936-E2DE0784FD77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3F057B1-3EF7-4C53-A975-A970E6953E16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3F057B1-3EF7-4C53-A975-A970E6953E16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3F057B1-3EF7-4C53-A975-A970E6953E16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3F057B1-3EF7-4C53-A975-A970E6953E16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D4A843BC-2E05-412E-AD41-BA656BD5E99A} = {88134BDB-19CF-4F4E-909D-37FA6A54C591}
+		{7B644B11-835E-4780-8936-E2DE0784FD77} = {88134BDB-19CF-4F4E-909D-37FA6A54C591}
 	EndGlobalSection
 EndGlobal

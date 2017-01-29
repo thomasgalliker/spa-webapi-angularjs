@@ -5,8 +5,20 @@
         .config(config)
         .run(run);
 
-    config.$inject = ['$routeProvider'];
-    function config($routeProvider) {
+    config.$inject = ['$routeProvider', '$provide'];
+    function config($routeProvider, $provide) {
+
+        $provide.decorator('$exceptionHandler', ['$log', '$delegate',
+              function ($log, $delegate) {
+                  return function (exception, cause) {
+                      //$log.debug(exception);
+                      //TODO: Log unhandled exception here
+                      $delegate(exception, cause);
+                  };
+              }
+        ]);
+
+
         $routeProvider
             .when("/", {
                 templateUrl: "scripts/spa/home/index.html",
@@ -43,6 +55,11 @@
                 controller: "registerCtrl"
             })
             .when("/account/edit/:id/", {
+                templateUrl: "scripts/spa/account/accountDetails.html",
+                controller: "accountDetailsCtrl",
+                resolve: { isAuthenticated: isAuthenticated }
+            })
+            .when("/account/add", {
                 templateUrl: "scripts/spa/account/accountDetails.html",
                 controller: "accountDetailsCtrl",
                 resolve: { isAuthenticated: isAuthenticated }
@@ -110,6 +127,25 @@
             $('[data-toggle=offcanvas]').click(function () {
                 $('.row-offcanvas').toggleClass('active');
             });
+        });
+
+        // see what's going on when the route tries to change
+        $rootScope.$on('$routeChangeStart', function (event, next, current) {
+            // next is an object that is the route that we are starting to go to
+            // current is an object that is the route where we are currently
+
+            //var currentPath = current.originalPath;
+            //var nextPath = next.originalPath;
+
+            //console.log('Starting to leave %s to go to %s', currentPath, nextPath);
+        });
+
+        $rootScope.$on('$routeChangeError', function (evt, current, previous, rejection) {
+            console.log('Route error', rejection);
+        });
+
+        $rootScope.$on('routeChangeSuccess', function (evt, current, previous) {
+            console.log('Route success');
         });
     }
 

@@ -3,29 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
-using HomeCinema.Data.Extensions;
-using HomeCinema.Data.Infrastructure;
+using EntityFramework.Toolkit.Core;
+using EntityFramework.Toolkit.Core.Extensions;
+
 using HomeCinema.Data.Repositories;
 using HomeCinema.Entities;
 using HomeCinema.Services.Abstract;
 using HomeCinema.Services.Utilities;
 
 using Claim = HomeCinema.Entities.Claim;
+using IUnitOfWork = HomeCinema.Data.Infrastructure.IUnitOfWork;
 
 namespace HomeCinema.Services
 {
     public class MembershipService : IMembershipService
     {
-        private readonly IEntityBaseRepository<User> userRepository;
-        private readonly IEntityBaseRepository<Role> roleRepository;
-        private readonly IEntityBaseRepository<UserRole> userRoleRepository;
+        private readonly IUserRepository userRepository;
+        private readonly IGenericRepository<Role> roleRepository;
+        private readonly IGenericRepository<UserRole> userRoleRepository;
         private readonly IEncryptionService encryptionService;
         private readonly IUnitOfWork unitOfWork;
 
         public MembershipService(
-            IEntityBaseRepository<User> userRepository,
-            IEntityBaseRepository<Role> roleRepository,
-            IEntityBaseRepository<UserRole> userRoleRepository,
+            IUserRepository userRepository,
+            IGenericRepository<Role> roleRepository,
+            IGenericRepository<UserRole> userRoleRepository,
             IEncryptionService encryptionService,
             IUnitOfWork unitOfWork)
         {
@@ -42,7 +44,7 @@ namespace HomeCinema.Services
         {
             var membershipContext = new MembershipContext();
 
-            var user = this.userRepository.GetSingleByUsername(username);
+            var user = this.userRepository.Get().SingleOrDefault(u => u.Username == username);
             if (user != null && this.IsUserValid(user, password))
             {
                 membershipContext.User = user;
@@ -68,7 +70,7 @@ namespace HomeCinema.Services
 
         public User CreateUser(string username, string password, string email, params Role[] roles)
         {
-            var existingUser = this.userRepository.GetSingleByUsername(username);
+            var existingUser = this.userRepository.GetByUsername(username);
             if (existingUser != null)
             {
                 throw new Exception("Username is already in use");
@@ -86,9 +88,10 @@ namespace HomeCinema.Services
                 DateCreated = DateTime.Now
             };
 
+
             this.userRepository.Add(user);
 
-            //this.unitOfWork.Commit();
+            this.unitOfWork.Commit(); // TODO: THis call is very problematic; can lead to situation where we have added a user, but without any role (in case 2nd commit fails)
 
             if (roles != null && roles.Length > 0)
             {
@@ -105,7 +108,7 @@ namespace HomeCinema.Services
 
         public User GetUser(int userId)
         {
-            return this.userRepository.GetSingle(userId);
+            return this.userRepository.FindById(userId);
         }
 
         public ICollection<User> GetUsers()
@@ -117,7 +120,7 @@ namespace HomeCinema.Services
         {
             var result = new List<Role>();
 
-            var existingUser = this.userRepository.GetSingleByUsername(username);
+            var existingUser = this.userRepository.GetByUsername(username);
             if (existingUser != null)
             {
                 foreach (var userRole in existingUser.UserRoles)
@@ -127,6 +130,56 @@ namespace HomeCinema.Services
             }
 
             return result.Distinct().ToList();
+        }
+
+        public ICollection<Role> GetRoles()
+        {
+            return this.roleRepository.GetAll().ToList();
+        }
+
+        public void UpdateUser(User user, User updateUser)
+        {
+            // Update scalar properties
+            user.Username = updateUser.Username;
+            user.Email = updateUser.Email;
+
+            // Upate roles and claims
+            var newRoleIds = updateUser.UserRoles.Select(ur => ur.RoleId).ToList();
+            foreach (var userRole in user.UserRoles.ToList())
+            {
+                if (!newRoleIds.Contains(userRole.RoleId))
+                {
+                    this.userRoleRepository.Remove(userRole);
+                    user.UserRoles.Remove(userRole);
+                }
+            }
+
+            foreach (var roleId in newRoleIds)
+            {
+                // Add the roles which are not in the list of user's roles
+                if (user.UserRoles.All(ur => ur.RoleId != roleId))
+                {
+                    var newRole = new UserRole { UserId = user.ID, RoleId = roleId };
+                    //this.userRoleRepository.Add(newRole);
+                    user.UserRoles.Add(newRole);
+                }
+                // Adds roles 1 and 2 in the example
+            }
+
+            // Save to database
+            this.userRepository.Update(user);
+            this.userRepository.Save();
+        }
+
+        public bool IsExistingUser(int userId)
+        {
+            return this.userRepository.Any(userId);
+        }
+
+        public void DeleteUser(User user)
+        {
+            this.userRepository.Remove(user);
+            this.userRepository.Save();
         }
 
         public List<Claim> GetClaims(Role role)
@@ -151,7 +204,7 @@ namespace HomeCinema.Services
 
         private void AddUserToRole(User user, int roleId)
         {
-            var role = this.roleRepository.GetSingle(roleId);
+            var role = this.roleRepository.FindById(roleId);
             if (role == null)
             {
                 throw new Exception("Role doesn't exist.");
