@@ -15,9 +15,9 @@
             new Claim {ID = 4, ClaimType = ClaimTypes.Permission, ClaimValue = UserAdmin},
         };
 
-        public const string MovieRead = "user.admin";
-        public const string MovieCreate = "user.admin";
-        public const string MovieRent = "user.admin";
+        public const string MovieRead = "movie.read";
+        public const string MovieCreate = "movie.create";
+        public const string MovieRent = "movie.rent";
         public const string UserAdmin = "user.admin";
     }
 
