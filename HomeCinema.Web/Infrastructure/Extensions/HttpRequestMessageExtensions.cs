@@ -1,12 +1,33 @@
 ﻿using System;
 using System.Net.Http;
 using System.Text;
+using System.Web.Http.Dependencies;
+
+using HomeCinema.Data.Repositories;
+using HomeCinema.Entities;
+using HomeCinema.Services.Abstract;
 
 namespace HomeCinema.Web.Infrastructure.Extensions
 {
     internal static class HttpRequestMessageExtensions
     {
         private const string NullReplacement = "<null>";
+
+        internal static IMembershipService GetMembershipService(this HttpRequestMessage request)
+        {
+            return request.GetService<IMembershipService>();
+        }
+
+        internal static IEntityBaseRepository<T> GetDataRepository<T>(this HttpRequestMessage request) where T : class, IEntityBase, new()
+        {
+            return request.GetService<IEntityBaseRepository<T>>();
+        }
+
+        private static TService GetService<TService>(this HttpRequestMessage request)
+        {
+            IDependencyScope dependencyScope = request.GetDependencyScope();
+            return dependencyScope.GetService<TService>();
+        }
 
         internal static string AsString(this HttpMethod httpMethod)
         {
