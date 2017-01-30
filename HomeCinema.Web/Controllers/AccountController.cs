@@ -99,7 +99,7 @@ namespace HomeCinema.Web.Controllers
         [HttpPost]
         //[AuthorizeClaim("user.add")]
         [Route("add")]
-        public HttpResponseMessage Add(HttpRequestMessage request, RegistrationViewModel userDetailViewModel)
+        public HttpResponseMessage Add(HttpRequestMessage request, UserDetailViewModel userDetailViewModel)
         {
             return this.CreateHttpResponse(request, () =>
             {
@@ -121,8 +121,8 @@ namespace HomeCinema.Web.Controllers
 
                     var newUser = Mapper.Map<UserDetailViewModel, User>(userDetailViewModel);
                     var roles = Mapper.Map<IEnumerable<RoleViewModel>, IEnumerable<Role>>(userDetailViewModel.Roles);
-                    var addedUser = this.membershipService.CreateUser(newUser.Username, "", "", roles.ToArray());
-                   
+                    var addedUser = this.membershipService.CreateUser(newUser.Username, "TODO GATH: Not possible", "", roles.ToArray()); //TODO: Not possible
+
                     var viewModel = Mapper.Map<User, UserDetailViewModel>(addedUser);
                     response = request.CreateResponse(HttpStatusCode.Created, viewModel);
                 }
