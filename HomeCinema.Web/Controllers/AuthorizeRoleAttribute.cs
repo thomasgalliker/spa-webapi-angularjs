@@ -23,7 +23,7 @@ namespace HomeCinema.Web.Controllers
             this.Roles = roles;
         }
 
-        private new string Roles
+        private string Roles
         {
             get
             {
