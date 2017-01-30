@@ -11,6 +11,8 @@ namespace HomeCinema.Entities
 
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         public virtual ICollection<RoleClaim> RoleClaims { get; set; }
     }
 }

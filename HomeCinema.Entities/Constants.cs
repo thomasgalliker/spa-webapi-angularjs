@@ -9,10 +9,10 @@
     {
         public static Claim[] All => new[]
         {
-            new Claim {ID = 1, ClaimType = ClaimTypes.Permission, ClaimValue = MovieRead},
-            new Claim {ID = 2, ClaimType = ClaimTypes.Permission, ClaimValue = MovieCreate},
-            new Claim {ID = 3, ClaimType = ClaimTypes.Permission, ClaimValue = MovieRent},
-            new Claim {ID = 4, ClaimType = ClaimTypes.Permission, ClaimValue = UserAdmin},
+            new Claim {ID = 1, ClaimType = ClaimTypes.Permission, ClaimValue = MovieRead, Description = "Read movies and movie details"},
+            new Claim {ID = 2, ClaimType = ClaimTypes.Permission, ClaimValue = MovieCreate, Description = "Create new movies"},
+            new Claim {ID = 3, ClaimType = ClaimTypes.Permission, ClaimValue = MovieRent, Description = "Rent existing movies"},
+            new Claim {ID = 4, ClaimType = ClaimTypes.Permission, ClaimValue = UserAdmin, Description = "Read and update users"},
         };
 
         public const string MovieRead = "movie.read";
@@ -26,8 +26,8 @@
     {
         public static Role[] Defaults => new[]
         {
-            new Role { ID = 1, Name = Roles.SystemAdmin },
-            new Role { ID = 2, Name = Roles.RentAdmin },
+            new Role { ID = 1, Name = SystemAdmin, Description = "System administration role"},
+            new Role { ID = 2, Name = RentAdmin, Description = "Role for rent admins" },
             GuestRole,
         };
 

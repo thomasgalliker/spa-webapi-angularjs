@@ -8,6 +8,7 @@ namespace HomeCinema.Data.Configurations
         {
             this.Property(ur => ur.ClaimType).IsRequired().HasMaxLength(50);
             this.Property(ur => ur.ClaimValue).IsRequired().HasMaxLength(50);
+            this.Property(ur => ur.Description).IsOptional().HasMaxLength(200);
         }
     }
 }

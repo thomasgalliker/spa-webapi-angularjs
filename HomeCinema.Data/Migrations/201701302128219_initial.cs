@@ -1,7 +1,7 @@
-using System.Data.Entity.Migrations;
-
 namespace HomeCinema.Data.Migrations
 {
+    using System.Data.Entity.Migrations;
+
     public partial class initial : DbMigration
     {
         public override void Up()
@@ -13,6 +13,7 @@ namespace HomeCinema.Data.Migrations
                         ID = c.Int(nullable: false, identity: true),
                         ClaimType = c.String(nullable: false, maxLength: 50),
                         ClaimValue = c.String(nullable: false, maxLength: 50),
+                        Description = c.String(maxLength: 200),
                     })
                 .PrimaryKey(t => t.ID);
 
@@ -120,6 +121,7 @@ namespace HomeCinema.Data.Migrations
                     {
                         ID = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 50),
+                        Description = c.String(maxLength: 200),
                     })
                 .PrimaryKey(t => t.ID);
 
