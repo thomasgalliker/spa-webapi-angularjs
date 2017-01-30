@@ -60,7 +60,7 @@ namespace HomeCinema.Web.Infrastructure.MessageHandlers
                     return tsc.Task;
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 var response = new HttpResponseMessage(HttpStatusCode.Forbidden);
                 var tsc = new TaskCompletionSource<HttpResponseMessage>();

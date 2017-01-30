@@ -19,6 +19,8 @@
     accountDetailsCtrl.$inject = ['$scope', '$routeParams', 'apiService', 'notificationService'];
 
     function accountDetailsCtrl($scope, $routeParams, apiService, notificationService) {
+        $scope.vm = this;
+        $scope.vm.User = {};
         $scope.pageClass = 'page-home';
         $scope.isLoading = true;
         $scope.isReadOnly = true;
@@ -26,7 +28,6 @@
         $scope.saveAccount = saveAccount;
         $scope.addAccount = addAccount;
         $scope.deleteAccount = deleteAccount;
-        $scope.vm = {};
 
         if ($routeParams.id === undefined) {
             $scope.IsAdding = true;
@@ -35,11 +36,11 @@
         }
 
         $scope.toggleSelection = function toggleSelection(role) {
-            var index = $scope.vm.Roles.indexOfObjectWithProperty('Id', role.Id);
+            var index = $scope.vm.User.Roles.indexOfObjectWithProperty('Id', role.Id);
             if (index > -1) {
-                $scope.vm.Roles.splice(index, 1);
+                $scope.vm.User.Roles.splice(index, 1);
             } else {
-                $scope.vm.Roles.push(role);
+                $scope.vm.User.Roles.push(role);
             }
         };
 
@@ -59,22 +60,23 @@
         }
 
         function loadCompleted(result) {
-            $scope.vm = result.data;
-            $scope.vm.Roles = result.data.Roles;
-            $scope.vm.Claims = result.data.Claims;
+            $scope.vm.User = result.data;
+            $scope.vm.User.Roles = result.data.Roles;
+            $scope.vm.User.Roles = result.data.Roles;
+            $scope.vm.User.Claims = result.data.Claims;
 
             $scope.isLoading = false;
         }
 
         function rolesLoadCompleted(result) {
-            $scope.AllRoles = result.data;
+            $scope.vm.AllRoles = result.data;
 
             $scope.isLoading = false;
         }
 
 
         function saveAccount() {
-            apiService.post('/api/account/update/', $scope.vm,
+            apiService.post('/api/account/update/', $scope.vm.User,
                 saveAccountSucceeded,
                 saveAccountFailed);
         }
@@ -90,7 +92,7 @@
 
         //TODO GATH: Is this really a valid workflow?
         function addAccount() {
-            apiService.post('/api/account/add/', $scope.vm,
+            apiService.post('/api/account/add/', $scope.vm.User,
                 saveAccountSucceeded,
                 saveAccountFailed);
         }

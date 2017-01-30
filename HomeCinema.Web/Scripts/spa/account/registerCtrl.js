@@ -11,7 +11,7 @@
         $scope.user = {};
 
         function register() {
-            membershipService.register($scope.user, registerCompleted)
+            membershipService.register($scope.user, registerCompleted);
         }
 
         function registerCompleted(result) {

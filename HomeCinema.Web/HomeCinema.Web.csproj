@@ -177,7 +177,11 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\spa\account\claims.html" />
+    <Content Include="Scripts\spa\account\roles.html" />
+    <Content Include="Scripts\spa\account\claimsCtrl.js" />
     <Content Include="Scripts\spa\account\users.html" />
+    <Content Include="Scripts\spa\account\rolesCtrl.js" />
     <Content Include="Scripts\spa\account\usersCtrl.js" />
     <Content Include="Scripts\spa\account\accountDetails.html" />
     <Content Include="Scripts\spa\account\accountDetailsCtrl.js" />

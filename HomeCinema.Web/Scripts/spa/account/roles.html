@@ -1,0 +1,70 @@
+﻿<hr />
+<div class="row">
+    <div id="MainContent_UpdatePanel1">
+        <div ng-if="isLoading">
+            <div class="col-xs-4"></div>
+            <div class="col-xs-4">
+                <i class="fa fa-refresh fa-5x fa-spin"></i> <label class="label label-primary">Loading...</label>
+            </div>
+            <div class="col-xs-4"></div>
+        </div>
+
+        <div align="right">
+            <a ng-href="#/acccount/role/xxxx-add" class="btn btn-primary">
+                <i class="fa fa-plus"></i>Add Role
+            </a>
+        </div>
+
+        <form>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                    <input type="text" class="form-control" placeholder="Search" ng-model="searchRole">
+                </div>
+            </div>
+        </form>
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <td>
+                        <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+                            Role Name
+                            <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" ng-click="sortType = 'fish'; sortReverse = !sortReverse">
+                            Description
+                            <span ng-show="sortType == 'fish' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'fish' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" ng-click="sortType = 'xxx'; sortReverse = !sortReverse">
+                            Actions
+                            <span ng-show="sortType == 'xxx' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'xxx' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </td>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr ng-repeat="role in vm.Roles | orderBy:sortType:sortReverse | filter:searchRole">
+                    <td>{{ role.Name }}</td>
+                    <td>{{ role.Description }}</td>
+
+                    <td class="tooltip-demo" style="align-content: center; width:200px">
+                        <a class="btn btn-default btn-circle" data-toggle="tooltip" data-placement="top" title="Edit Role" ng-href="#/account/role/edit/{{role.Id}}"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-danger btn-circle" data-toggle="tooltip" data-placement="top" title="Delete Role" ng-click="deleteRole(role.Id);"><i class="fa fa-times"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->

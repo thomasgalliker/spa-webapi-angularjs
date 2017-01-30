@@ -24,5 +24,9 @@ namespace HomeCinema.Services.Abstract
         bool IsExistingUser(int userId);
 
         void DeleteUser(User user);
+
+        ICollection<Claim> GetClaims();
+
+        ICollection<Role> GetRolesByClaimId(int claimId);
     }
 }

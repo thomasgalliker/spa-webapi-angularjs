@@ -16,7 +16,7 @@ using Tracing;
 
 namespace HomeCinema.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [AuthorizeRole(Roles.SystemAdmin)]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiControllerBase
     {
@@ -223,17 +223,7 @@ namespace HomeCinema.Web.Controllers
                     if (this.IsCurrentUser(user) || this.User.HasClaim(c => c.Value == Claims.UserAdmin))
                     {
                         var userDetailViewModel = Mapper.Map<User, UserDetailViewModel>(user);
-
                         return request.CreateResponse(HttpStatusCode.OK, userDetailViewModel);
-                        //return request.CreateResponse(HttpStatusCode.OK,
-                        //    new
-                        //    {
-                        //        Id = user.ID,
-                        //        Username = user.Username,
-                        //        Email = user.Email,
-                        //        Roles = Mapper.Map<IEnumerable<Role>, IEnumerable<RoleViewModel>>(user.UserRoles.Select(ur => ur.Role)),
-                        //        Claims = user.UserRoles.Select(ur => ur.Role).SelectMany(r => r.RoleClaims.Select(rc => rc.Claim.ClaimValue))
-                        //    });
                     }
 
                     return request.CreateResponse(HttpStatusCode.Unauthorized);
@@ -275,6 +265,26 @@ namespace HomeCinema.Web.Controllers
                 var roleViewModels = Mapper.Map<IEnumerable<Role>, IEnumerable<RoleViewModel>>(roles);
 
                 return request.CreateResponse(HttpStatusCode.OK, roleViewModels);
+            });
+        }
+
+        //[AuthorizeClaim(Claims.UserAdmin)]
+        [Route("claims")]
+        [HttpGet]
+        public HttpResponseMessage GetAllClaims(HttpRequestMessage request)
+        {
+            return this.CreateHttpResponse(request, () =>
+            {
+                var claims = this.membershipService.GetClaims();
+                var claimViewModels = Mapper.Map<IEnumerable<Claim>, IEnumerable<ClaimViewModel>>(claims);
+                foreach (var claimViewModel in claimViewModels)
+                {
+                    var roles = this.membershipService.GetRolesByClaimId(claimViewModel.Id);
+                    var roleViewModels = Mapper.Map<IEnumerable<Role>, IEnumerable<RoleViewModel>>(roles);
+                    claimViewModel.Roles = roleViewModels.ToList();
+                }
+
+                return request.CreateResponse(HttpStatusCode.OK, claimViewModels);
             });
         }
     }

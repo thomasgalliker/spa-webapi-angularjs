@@ -43,12 +43,13 @@ namespace HomeCinema.Web.Mappings
                   .ForMember(dest => dest.Id, map => map.MapFrom(src => src.ID))
                   .ForMember(dest => dest.ClaimType, map => map.MapFrom(src => src.ClaimType))
                   .ForMember(dest => dest.ClaimValue, map => map.MapFrom(src => src.ClaimValue))
+                  .ForMember(dest => dest.Description, map => map.MapFrom(src => src.Description))
                   ;
 
             Mapper.CreateMap<User, UserDetailViewModel>()
                 .IncludeBase<User, UserViewModel>()
                 .ForMember(dest => dest.Roles, map => map.MapFrom(src => src.UserRoles.Select(ur => ur.Role)))
-                .ForMember(dest => dest.Claims, map => map.MapFrom(src => src.UserRoles.Select(ur => ur.Role).SelectMany(r => r.RoleClaims.Select(rc => rc.Claim))))
+                .ForMember(dest => dest.Claims, map => map.MapFrom(src => src.UserRoles.Select(ur => ur.Role).SelectMany(r => r.RoleClaims.Select(rc => rc.Claim)).Distinct())) // Distinct, in case we have overlaps in Role-Claim assignment
                 ;
 
             Mapper.CreateMap<UserDetailViewModel, User>()
@@ -59,6 +60,7 @@ namespace HomeCinema.Web.Mappings
             Mapper.CreateMap<Role, RoleViewModel>()
                 .ForMember(dest => dest.Id, map => map.MapFrom(src => src.ID))
                 .ForMember(dest => dest.Name, map => map.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Description, map => map.MapFrom(src => src.Description))
                 ;
         }
     }

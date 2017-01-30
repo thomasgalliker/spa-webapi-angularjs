@@ -16,11 +16,11 @@
                     <p class="lead">{{IsAdding ? 'Add New User' : 'Edit User'}}</p>
                     <div class="form-group">
                         <p>Username</p>
-                        <input type="text" placeholder="Username" class="form-control" ng-readonly="!IsAdding" ng-model="vm.Username"/>
+                        <input type="text" placeholder="Username" class="form-control" ng-readonly="!IsAdding" ng-model="vm.User.Username"/>
                     </div>
                     <div class="form-group">
                         <p>Email</p>
-                        <input type="text" placeholder="Username" class="form-control" ng-model="vm.Email"/>
+                        <input type="text" placeholder="Email" class="form-control" ng-model="vm.User.Email"/>
                     </div>
                     <div class="form-group">
                         <p>First Name</p>
@@ -34,15 +34,15 @@
 
                     <div class="form-group">
                         <p>Roles</p>
-                        <div ng-repeat="role in AllRoles">
-                            <input type="checkbox" ng-checked="vm.Roles.containsObjectWithProperty('Id', role.Id)" ng-click="toggleSelection(role)"/>
+                        <div ng-repeat="role in vm.AllRoles">
+                            <input type="checkbox" ng-checked="vm.User.Roles.containsObjectWithProperty('Id', role.Id)" ng-click="toggleSelection(role)"/>
                             {{role.Name}}
                         </div>
                     </div>
 
                     <div class="form-group">
                         <p>Claims</p>
-                        <div ng-repeat="claim in vm.Claims">
+                        <div ng-repeat="claim in vm.User.Claims">
                             <input type="checkbox" ng-checked="claim" ng-model="claim">{{claim}}
                         </div>
                     </div>

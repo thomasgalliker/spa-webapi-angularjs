@@ -21,6 +21,7 @@ namespace HomeCinema.Services
         private readonly IUserRepository userRepository;
         private readonly IGenericRepository<Role> roleRepository;
         private readonly IGenericRepository<UserRole> userRoleRepository;
+        private readonly IGenericRepository<Claim> claimRepository;
         private readonly IEncryptionService encryptionService;
         private readonly IUnitOfWork unitOfWork;
 
@@ -28,12 +29,14 @@ namespace HomeCinema.Services
             IUserRepository userRepository,
             IGenericRepository<Role> roleRepository,
             IGenericRepository<UserRole> userRoleRepository,
+            IGenericRepository<Claim> claimRepository,
             IEncryptionService encryptionService,
             IUnitOfWork unitOfWork)
         {
             this.userRepository = userRepository;
             this.roleRepository = roleRepository;
             this.userRoleRepository = userRoleRepository;
+            this.claimRepository = claimRepository;
             this.encryptionService = encryptionService;
             this.unitOfWork = unitOfWork;
         }
@@ -90,8 +93,9 @@ namespace HomeCinema.Services
 
 
             this.userRepository.Add(user);
+            this.userRepository.Save();
 
-            this.unitOfWork.Commit(); // TODO: THis call is very problematic; can lead to situation where we have added a user, but without any role (in case 2nd commit fails)
+            //this.unitOfWork.Commit(); // TODO: THis call is very problematic; can lead to situation where we have added a user, but without any role (in case 2nd commit fails)
 
             if (roles != null && roles.Length > 0)
             {
@@ -101,7 +105,8 @@ namespace HomeCinema.Services
                 }
             }
 
-            this.unitOfWork.Commit();
+            this.roleRepository.Save();
+            //this.unitOfWork.Commit();
 
             return user;
         }
@@ -180,6 +185,18 @@ namespace HomeCinema.Services
         {
             this.userRepository.Remove(user);
             this.userRepository.Save();
+        }
+
+        public ICollection<Claim> GetClaims()
+        {
+            return this.claimRepository.GetAll().ToList();
+        }
+
+        public ICollection<Role> GetRolesByClaimId(int claimId)
+        {
+            return this.roleRepository.Get()
+                .Where(r => r.RoleClaims.Any(rc => rc.ClaimId == claimId))
+                .ToList();
         }
 
         public List<Claim> GetClaims(Role role)

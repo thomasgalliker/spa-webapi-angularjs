@@ -68,6 +68,14 @@
                 templateUrl: "scripts/spa/account/users.html",
                 controller: "usersCtrl"
             })
+            .when("/account/roles", {
+                templateUrl: "scripts/spa/account/roles.html",
+                controller: "rolesCtrl"
+            })
+            .when("/account/claims", {
+                templateUrl: "scripts/spa/account/claims.html",
+                controller: "claimsCtrl"
+            })
             .when("/customers", {
                 templateUrl: "scripts/spa/customers/customers.html",
                 controller: "customersCtrl"
