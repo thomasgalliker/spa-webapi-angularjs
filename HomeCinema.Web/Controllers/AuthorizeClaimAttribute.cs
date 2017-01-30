@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Web.Http;
 using System.Web.Http.Controllers;
+using System.Web.Http.Filters;
+
+using HomeCinema.Web.Infrastructure.ExceptionHandling;
+using HomeCinema.Web.Infrastructure.Extensions;
 
 using ClaimTypes = HomeCinema.Entities.ClaimTypes;
 
 namespace HomeCinema.Web.Controllers
 {
-    public class AuthorizeClaimAttribute : AuthorizeAttribute //TODO : Use AuthorizationFilterAttribute
+    public class AuthorizeClaimAttribute : AuthorizationFilterAttribute
     {
         private readonly string claimType;
         private string claims;
@@ -54,20 +61,76 @@ namespace HomeCinema.Web.Controllers
             }).Where(s => !string.IsNullOrEmpty(s.trimmed)).Select(param0 => param0.trimmed).ToArray();
         }
 
-        protected override bool IsAuthorized(HttpActionContext actionContext)
+        private static bool SkipAuthorization(HttpActionContext actionContext)
+        {
+            if (!actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any())
+            {
+                return actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any();
+            }
+
+            return true;
+        }
+
+        private static bool IsAuthenticated(IPrincipal principal)
+        {
+            return principal != null && principal.Identity != null && principal.Identity.IsAuthenticated;
+        }
+
+        public override void OnAuthorization(HttpActionContext actionContext)
         {
             if (actionContext == null)
             {
                 throw new ArgumentNullException(nameof(actionContext));
             }
 
+            if (SkipAuthorization(actionContext))
+            {
+                return;
+            }
+
             var principal = actionContext.ControllerContext.RequestContext.Principal as ClaimsPrincipal;
-            
-            return principal != null && 
-                   principal.Identity != null && 
-                   principal.Identity.IsAuthenticated &&
-                   this.AllClaimsContained(principal);
-                   
+            if (IsAuthenticated(principal))
+            {
+                if (!this.AllClaimsContained(principal))
+                {
+                    this.HandleUnauthorizedRequest(actionContext);
+                }
+            }
+            else
+            {
+                this.HandleUnauthenticatedRequest(actionContext);
+            }
+        }
+
+        protected virtual void HandleUnauthenticatedRequest(HttpActionContext actionContext)
+        {
+            var request = actionContext.ControllerContext.Request;
+            var errorMessage = new ExceptionDto
+            {
+                CorrelationId = request.GetCorrelationId(),
+                RequestMethod = request.Method.AsString(),
+                RequestUri = request.RequestUri.AsString(),
+                Message = $"Identity with name '{actionContext.RequestContext.Principal.Identity.Name}' is not authenticated."
+            };
+
+            // 401 Unauthorized means 'not authenticated', see here: http://stackoverflow.com/questions/3297048/403-forbidden-vs-401-unauthorized-http-responses
+            var response = actionContext.ControllerContext.Request.CreateResponse(HttpStatusCode.Unauthorized, errorMessage);
+            actionContext.Response = response;
+        }
+
+        protected virtual void HandleUnauthorizedRequest(HttpActionContext actionContext)
+        {
+            var request = actionContext.ControllerContext.Request;
+            var errorMessage = new ExceptionDto
+            {
+                CorrelationId = request.GetCorrelationId(),
+                RequestMethod = request.Method.AsString(),
+                RequestUri = request.RequestUri.AsString(),
+                Message = $"Identity with name '{actionContext.RequestContext.Principal.Identity.Name}' is not authorized to access resource {request.RequestUri.AsString()}."
+            };
+
+            var response = actionContext.ControllerContext.Request.CreateResponse(HttpStatusCode.Forbidden, errorMessage);
+            actionContext.Response = response;
         }
 
         private bool AllClaimsContained(ClaimsPrincipal claimsPrincipal)
