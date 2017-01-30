@@ -1,19 +1,18 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using AutoMapper;
 using HomeCinema.Data.Infrastructure;
 using HomeCinema.Data.Repositories;
 using HomeCinema.Entities;
 using HomeCinema.Web.Infrastructure.Core;
 using HomeCinema.Web.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
 
 namespace HomeCinema.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [AuthorizeRole(Roles.SystemAdmin)]
     [RoutePrefix("api/genres")]
     public class GenresController : ApiControllerBase
     {

@@ -10,7 +10,6 @@ using HomeCinema.Web.Infrastructure.Core;
 
 namespace HomeCinema.Web.Controllers
 {
-    //[Authorize(Roles = "Admin")]
     [RoutePrefix("api/about")]
     public class AboutController : ApiControllerBase
     {

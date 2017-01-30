@@ -14,7 +14,7 @@ using HomeCinema.Data.Extensions;
 
 namespace HomeCinema.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [AuthorizeRole(Roles.SystemAdmin)]
     [RoutePrefix("api/rentalsextended")]
     public class RentalsExtendedController : ApiControllerBaseExtended
     {
