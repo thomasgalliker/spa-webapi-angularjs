@@ -37,10 +37,10 @@ namespace HomeCinema.Data.Migrations
                 u => u.Email,
                 new User
                 {
-                    Email = "chsakells.blog@gmail.com",
-                    Username = "chsakell",
-                    HashedPassword = "XwAQoiq84p1RUzhAyPfaMDKVgSwnn80NCtsE8dNv3XI=",
-                    Salt = "mNKLRbEFCH8y1xIyTXP4qA==",
+                    Username = "admin",
+                    Email = "admin@undefined.com",
+                    HashedPassword = "vnBggdV0Ipy0m2OzuGpVYMYomYt13lO5Veeu+gH5aeQ=", // Initial Password: test
+                    Salt = "EmEJhNgyx1tjpVZkCLy2cQ==",
                     IsLocked = false,
                     DateCreated = DateTime.Now
                 });
