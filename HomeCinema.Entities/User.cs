@@ -6,7 +6,7 @@ namespace HomeCinema.Entities
     /// <summary>
     ///     HomeCinema User Account
     /// </summary>
-    public class User : IEntityBase
+    public class User : IEntityBase, ISystemDefault
     {
         public User()
         {
@@ -16,6 +16,10 @@ namespace HomeCinema.Entities
         public int ID { get; set; }
 
         public string Username { get; set; }
+
+        public string Firstname { get; set; }
+
+        public string Lastname { get; set; }
 
         public string Email { get; set; }
 
@@ -28,5 +32,7 @@ namespace HomeCinema.Entities
         public DateTime DateCreated { get; set; }
 
         public virtual ICollection<UserRole> UserRoles { get; set; }
+
+        public bool IsSystemDefault { get; set; }
     }
 }

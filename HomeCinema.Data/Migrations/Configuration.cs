@@ -34,16 +34,8 @@ namespace HomeCinema.Data.Migrations
 
             // username: chsakell, password: homecinema
             context.UserSet.AddOrUpdate(
-                u => u.Email,
-                new User
-                {
-                    Username = "admin",
-                    Email = "admin@undefined.com",
-                    HashedPassword = "vnBggdV0Ipy0m2OzuGpVYMYomYt13lO5Veeu+gH5aeQ=", // Initial Password: test
-                    Salt = "EmEJhNgyx1tjpVZkCLy2cQ==",
-                    IsLocked = false,
-                    DateCreated = DateTime.Now
-                });
+                u => u.Username,
+                Users.Defaults);
 
             // create user-admin for chsakell
             context.UserRoleSet.AddOrUpdate(

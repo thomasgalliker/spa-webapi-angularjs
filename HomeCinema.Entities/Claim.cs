@@ -1,7 +1,7 @@
 ﻿
 namespace HomeCinema.Entities
 {
-    public class Claim : IEntityBase
+    public class Claim : IEntityBase, ISystemDefault
     {
         public Claim()
         {
@@ -15,5 +15,7 @@ namespace HomeCinema.Entities
         public string ClaimValue { get; set; }
 
         public string Description { get; set; }
+
+        public bool IsSystemDefault { get; set; }
     }
 }

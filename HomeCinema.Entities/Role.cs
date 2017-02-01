@@ -5,7 +5,7 @@ namespace HomeCinema.Entities
     /// <summary>
     ///     HomeCinema Role
     /// </summary>
-    public class Role : IEntityBase
+    public class Role : IEntityBase, ISystemDefault
     {
         public int ID { get; set; }
 
@@ -14,5 +14,7 @@ namespace HomeCinema.Entities
         public string Description { get; set; }
 
         public virtual ICollection<RoleClaim> RoleClaims { get; set; }
+
+        public bool IsSystemDefault { get; set; }
     }
 }
