@@ -22,7 +22,7 @@ namespace HomeCinema.Web.Infrastructure.Logging
 
             if (response.IsSuccessStatusCode)
             {
-                responseMessage = await response.Content.ReadAsByteArrayAsync();
+                responseMessage = response.Content == null ? new byte[] { } : await response.Content.ReadAsByteArrayAsync();
             }
             else
             {
