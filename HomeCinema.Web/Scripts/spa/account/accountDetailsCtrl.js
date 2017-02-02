@@ -62,7 +62,6 @@
         function loadCompleted(result) {
             $scope.vm.User = result.data;
             $scope.vm.User.Roles = result.data.Roles;
-            $scope.vm.User.Roles = result.data.Roles;
             $scope.vm.User.Claims = result.data.Claims;
 
             $scope.isLoading = false;
@@ -93,8 +92,8 @@
         //TODO GATH: Is this really a valid workflow?
         function addAccount() {
             apiService.post('/api/account/add/', $scope.vm.User,
-                saveAccountSucceeded,
-                saveAccountFailed);
+                addAccountSucceeded,
+                addAccountFailed);
         }
 
         function addAccountSucceeded(result) {

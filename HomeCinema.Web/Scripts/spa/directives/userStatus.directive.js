@@ -9,16 +9,16 @@
 			templateUrl: "./Scripts/spa/directives/userStatus.html",
 			link: function ($scope, $element, $attrs) {
 				$scope.getUserStatusLabel = function () {
-					if ($attrs.isLocked === 'true')
-						return 'label label-danger'
-					else
-						return 'label label-success'
+				    if ($attrs.isLocked === 'true')
+				        return 'label label-danger';
+				    else
+				        return 'label label-success';
 				};
 				$scope.getUserStatus = function () {
 				    if ($attrs.isLocked === 'true')
-				        return 'Locked'
-					else
-						return 'Unlocked'
+				        return 'Locked';
+				    else
+				        return 'Unlocked';
 				};
 			}
 		}

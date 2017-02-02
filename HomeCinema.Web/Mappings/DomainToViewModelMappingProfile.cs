@@ -34,6 +34,8 @@ namespace HomeCinema.Web.Mappings
                 .ForMember(dest => dest.Id, map => map.MapFrom(src => src.ID))
                 .ForMember(dest => dest.Username, map => map.MapFrom(src => src.Username))
                 .ForMember(dest => dest.Email, map => map.MapFrom(src => src.Email))
+                .ForMember(dest => dest.Firstname, map => map.MapFrom(src => src.Firstname))
+                .ForMember(dest => dest.Lastname, map => map.MapFrom(src => src.Lastname))
                 .ForMember(dest => dest.IsLocked, map => map.MapFrom(src => src.IsLocked))
                 .ReverseMap()
                 .ForMember(dest => dest.ID, map => map.MapFrom(src => src.Id))
@@ -61,6 +63,10 @@ namespace HomeCinema.Web.Mappings
                 .ForMember(dest => dest.Id, map => map.MapFrom(src => src.ID))
                 .ForMember(dest => dest.Name, map => map.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Description, map => map.MapFrom(src => src.Description))
+                .ForMember(dest => dest.Claims, map => map.MapFrom(src => src.RoleClaims.Select(rc => rc.Claim)))
+                .ReverseMap()
+                .ForMember(dest => dest.ID, map => map.MapFrom(src => src.Id))
+                .ForMember(dest => dest.RoleClaims, map => map.MapFrom(src => src.Claims.Select(c => new RoleClaim { ClaimId = c.Id })))
                 ;
         }
     }

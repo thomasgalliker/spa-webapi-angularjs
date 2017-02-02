@@ -3,9 +3,9 @@
 
     app.controller('usersCtrl', usersCtrl);
 
-    usersCtrl.$inject = ['$scope','apiService', 'notificationService'];
+    usersCtrl.$inject = ['$scope','apiService', 'notificationService', '$ngBootbox'];
 
-    function usersCtrl($scope, apiService, notificationService) {
+    function usersCtrl($scope, apiService, notificationService, $ngBootbox) {
         $scope.pageClass = 'page-home';
         $scope.isLoading = true;
         $scope.isReadOnly = true;
@@ -34,6 +34,17 @@
         }
 
         function deleteUser(userId) {
+            //var options = {
+            //    message: 'Message',
+            //    title: 'Title',
+            //    animate: false,
+            //    buttons: {}
+            //};
+
+            //$ngBootbox.customDialog(options);
+
+            $ngBootbox.alert('The button was clicked!');
+
             apiService.get('/api/account/delete/' + userId, null,
                         deleteUserCompleted,
                         deleteUserFailed);

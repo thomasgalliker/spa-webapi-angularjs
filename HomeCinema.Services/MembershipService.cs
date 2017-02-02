@@ -21,6 +21,7 @@ namespace HomeCinema.Services
         private readonly IUserRepository userRepository;
         private readonly IGenericRepository<Role> roleRepository;
         private readonly IGenericRepository<UserRole> userRoleRepository;
+        private readonly IGenericRepository<RoleClaim> roleClaimRepository;
         private readonly IGenericRepository<Claim> claimRepository;
         private readonly IEncryptionService encryptionService;
         private readonly IUnitOfWork unitOfWork;
@@ -29,6 +30,7 @@ namespace HomeCinema.Services
             IUserRepository userRepository,
             IGenericRepository<Role> roleRepository,
             IGenericRepository<UserRole> userRoleRepository,
+            IGenericRepository<RoleClaim> roleClaimRepository,
             IGenericRepository<Claim> claimRepository,
             IEncryptionService encryptionService,
             IUnitOfWork unitOfWork)
@@ -36,6 +38,7 @@ namespace HomeCinema.Services
             this.userRepository = userRepository;
             this.roleRepository = roleRepository;
             this.userRoleRepository = userRoleRepository;
+            this.roleClaimRepository = roleClaimRepository;
             this.claimRepository = claimRepository;
             this.encryptionService = encryptionService;
             this.unitOfWork = unitOfWork;
@@ -147,6 +150,8 @@ namespace HomeCinema.Services
             // Update scalar properties
             user.Username = updateUser.Username;
             user.Email = updateUser.Email;
+            user.Firstname = updateUser.Firstname;
+            user.Lastname = updateUser.Lastname;
 
             // Upate roles and claims
             var newRoleIds = updateUser.UserRoles.Select(ur => ur.RoleId).ToList();
@@ -164,11 +169,9 @@ namespace HomeCinema.Services
                 // Add the roles which are not in the list of user's roles
                 if (user.UserRoles.All(ur => ur.RoleId != roleId))
                 {
-                    var newRole = new UserRole { UserId = user.ID, RoleId = roleId };
-                    //this.userRoleRepository.Add(newRole);
-                    user.UserRoles.Add(newRole);
+                    var newUserRole = new UserRole { UserId = user.ID, RoleId = roleId };
+                    user.UserRoles.Add(newUserRole);
                 }
-                // Adds roles 1 and 2 in the example
             }
 
             // Save to database
@@ -197,6 +200,46 @@ namespace HomeCinema.Services
             return this.roleRepository.Get()
                 .Where(r => r.RoleClaims.Any(rc => rc.ClaimId == claimId))
                 .ToList();
+        }
+
+        public Role GetRole(int roleId)
+        {
+            return this.roleRepository.FindById(roleId);
+        }
+
+        public void UpdateRole(Role role, Role updateRole)
+        {
+            // Update scalar properties
+            if (role.IsSystemDefault == false)
+            {
+                role.Name = updateRole.Name;
+            }
+            role.Description = updateRole.Description;
+
+            // Upate claims
+            var newClaimIds = updateRole.RoleClaims.Select(rc => rc.ClaimId).ToList();
+            foreach (var roleClaim in role.RoleClaims.ToList())
+            {
+                if (!newClaimIds.Contains(roleClaim.ClaimId))
+                {
+                    this.roleClaimRepository.Remove(roleClaim);
+                    role.RoleClaims.Remove(roleClaim);
+                }
+            }
+
+            foreach (var claimId in newClaimIds)
+            {
+                // Add the claims which are not in the list of role's claims
+                if (role.RoleClaims.All(ur => ur.ClaimId != claimId))
+                {
+                    var newRoleClaim = new RoleClaim { RoleId = role.ID, ClaimId = claimId };
+                    role.RoleClaims.Add(newRoleClaim);
+                }
+            }
+
+            // Save to database
+            this.roleRepository.Update(role);
+            this.roleRepository.Save();
         }
 
         public List<Claim> GetClaims(Role role)

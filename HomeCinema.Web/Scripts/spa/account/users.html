@@ -61,7 +61,7 @@
 
             <tbody>
                 <tr ng-repeat="user in vm.Users | orderBy:sortType:sortReverse | filter:searchUser">
-                    <td>{{ user.Username }}</td>
+                    <td><strong>{{ user.Username }}</strong></td>
                     <td>{{ user.Email }}</td>
 
                     <td><user-status is-locked="{{user.IsLocked}}" /></td>

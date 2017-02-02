@@ -78,9 +78,9 @@ namespace HomeCinema.Web.Controllers
                 else
                 {
                     var createdUser = this.membershipService.CreateUser(
-                        username: registrationViewModel.Username, 
+                        username: registrationViewModel.Username,
                         password: registrationViewModel.Password,
-                        email: registrationViewModel.Email, 
+                        email: registrationViewModel.Email,
                         roles: Roles.GuestRole);
                     if (createdUser != null)
                     {
@@ -132,7 +132,7 @@ namespace HomeCinema.Web.Controllers
         }
 
         [HttpPost]
-        //[AuthorizeClaim("user.add")]
+        //[Authenticate]
         [Route("update")]
         public HttpResponseMessage Update(HttpRequestMessage request, UserDetailViewModel userDetailViewModel)
         {
@@ -146,8 +146,6 @@ namespace HomeCinema.Web.Controllers
                 }
                 else
                 {
-                    // TODO IMplement Add New user
-                    // TODO Check if user already exists? Reuse registration logic?
                     var user = this.membershipService.GetUser(userDetailViewModel.Id);
                     if (user == null)
                     {
@@ -167,7 +165,7 @@ namespace HomeCinema.Web.Controllers
 
 
         [HttpGet]
-        //[AuthorizeClaim("user.delete")]
+        [AuthorizeClaim(Claims.UserAdmin)]
         [Route("delete/{userId:int}")]
         public HttpResponseMessage Delete(HttpRequestMessage request, int userId)
         {
@@ -184,6 +182,11 @@ namespace HomeCinema.Web.Controllers
                     return request.CreateResponse(HttpStatusCode.BadRequest, "User does not exist");
                 }
 
+                if (user.IsSystemDefault)
+                {
+                    return request.CreateResponse(HttpStatusCode.BadRequest, "Cannot delete system default user");
+                }
+
                 if (this.IsCurrentUser(user))
                 {
                     return request.CreateResponse(HttpStatusCode.BadRequest, "Cannot delete your own user");
@@ -195,10 +198,10 @@ namespace HomeCinema.Web.Controllers
             });
         }
 
-        [AllowAnonymous]
+        //[Authorize]
         [Route("details/{id:int}")]
         [HttpGet]
-        public HttpResponseMessage Get(HttpRequestMessage request, int id)
+        public HttpResponseMessage GetUser(HttpRequestMessage request, int id)
         {
             return this.CreateHttpResponse(request, () =>
                 {
@@ -228,6 +231,47 @@ namespace HomeCinema.Web.Controllers
 
                     return request.CreateResponse(HttpStatusCode.Unauthorized);
                 });
+        }
+
+        [AuthorizeClaim(Claims.UserAdmin)]
+        [Route("role/details/{roleId:int}")]
+        [HttpGet]
+        public HttpResponseMessage GetRole(HttpRequestMessage request, int roleId)
+        {
+            return this.CreateHttpResponse(request, () =>
+            {
+                var role = this.membershipService.GetRole(roleId);
+                if (role == null)
+                {
+                    return request.CreateResponse(HttpStatusCode.BadRequest);
+                }
+
+                var roleViewModel = Mapper.Map<Role, RoleViewModel>(role);
+                return request.CreateResponse(HttpStatusCode.OK, roleViewModel);
+            });
+        }
+
+        [AuthorizeClaim(Claims.UserAdmin)]
+        [HttpPost]
+        [Route("role/update")]
+        public HttpResponseMessage UpdateRole(HttpRequestMessage request, RoleViewModel roleViewModel)
+        {
+            return this.CreateHttpResponse(
+                request,
+                () =>
+                    {
+                        var role = this.membershipService.GetRole(roleViewModel.Id);
+                        if (role == null)
+                        {
+                            return request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+
+                        var updateRole = Mapper.Map<RoleViewModel, Role>(roleViewModel);
+                        this.membershipService.UpdateRole(role, updateRole);
+
+                        var viewModel = Mapper.Map<Role, RoleViewModel>(role);
+                        return request.CreateResponse(HttpStatusCode.Created, viewModel);
+                    });
         }
 
         [AuthorizeClaim(Claims.UserAdmin)]
@@ -268,7 +312,7 @@ namespace HomeCinema.Web.Controllers
             });
         }
 
-        //[AuthorizeClaim(Claims.UserAdmin)]
+        [AuthorizeClaim(Claims.UserAdmin)]
         [Route("claims")]
         [HttpGet]
         public HttpResponseMessage GetAllClaims(HttpRequestMessage request)
@@ -287,5 +331,29 @@ namespace HomeCinema.Web.Controllers
                 return request.CreateResponse(HttpStatusCode.OK, claimViewModels);
             });
         }
+
+        [HttpPost]
+        [AuthorizeClaim(Claims.UserAdmin)]
+        [Route("claims/update")]
+        public HttpResponseMessage Update(HttpRequestMessage request, IEnumerable<ClaimViewModel> claimViewModels)
+        {
+            return this.CreateHttpResponse(request, () =>
+            {
+                HttpResponseMessage response = null;
+
+                if (!this.ModelState.IsValid)
+                {
+                    response = request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
+                }
+                else
+                {
+
+                    response = request.CreateResponse(HttpStatusCode.OK);
+                }
+
+                return response;
+            });
+        }
+
     }
 }

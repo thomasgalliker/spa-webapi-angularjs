@@ -53,7 +53,7 @@
 
             <tbody>
                 <tr ng-repeat="role in vm.Roles | orderBy:sortType:sortReverse | filter:searchRole">
-                    <td>{{ role.Name }}</td>
+                    <td><strong>{{ role.Name }}</strong></td>
                     <td>{{ role.Description }}</td>
 
                     <td class="tooltip-demo" style="align-content: center; width:200px">

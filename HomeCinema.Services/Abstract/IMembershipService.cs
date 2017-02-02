@@ -28,5 +28,9 @@ namespace HomeCinema.Services.Abstract
         ICollection<Claim> GetClaims();
 
         ICollection<Role> GetRolesByClaimId(int claimId);
+
+        Role GetRole(int roleId);
+
+        void UpdateRole(Role role, Role updateRole);
     }
 }

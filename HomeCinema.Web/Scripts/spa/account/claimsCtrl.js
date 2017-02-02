@@ -20,6 +20,7 @@
 
     function claimsCtrl($scope, apiService, notificationService) {
         $scope.vm = this;
+        $scope.vm.IsEditing = false;
         $scope.pageClass = 'page-home';
         $scope.isLoading = true;
         $scope.isReadOnly = true;
@@ -94,6 +95,26 @@
                 $scope.vm.Claims[claimIndex].Roles.push(role);
             }
         };
+
+        $scope.editClaims = function editClaims() {
+            $scope.vm.IsEditing = !$scope.vm.IsEditing;
+        }
+
+        $scope.saveClaims = function saveClaims() {
+            apiService.post('/api/account/claims/update', $scope.vm.Claims,
+                          saveClaimsCompleted,
+                          saveClaimsFailed);
+        }
+
+        function saveClaimsCompleted() {
+            $scope.vm.IsEditing = false;
+            notificationService.displaySuccess("", "Successfully saved claims");
+        }
+
+        function saveClaimsFailed() {
+            notificationService.displayError("", "Failed to save claims");
+        }
+
 
         loadData();
     }

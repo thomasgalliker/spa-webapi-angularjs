@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('homeCinema', ['common.core', 'common.ui'])
+    angular.module('homeCinema', ['common.core', 'common.ui', 'ngBootbox'])
         .config(config)
         .run(run);
 
@@ -17,7 +17,6 @@
                   };
               }
         ]);
-
 
         $routeProvider
             .when("/", {
@@ -72,6 +71,16 @@
                 templateUrl: "scripts/spa/account/roles.html",
                 controller: "rolesCtrl"
             })
+            .when("/account/role/edit/:id/", {
+                templateUrl: "scripts/spa/account/roleDetails.html",
+                controller: "roleDetailsCtrl",
+                resolve: { isAuthenticated: isAuthenticated }
+            })
+             .when("/account/role/add", {
+                 templateUrl: "scripts/spa/account/roleDetails.html",
+                 controller: "roleDetailsCtrl",
+                 resolve: { isAuthenticated: isAuthenticated }
+             })
             .when("/account/claims", {
                 templateUrl: "scripts/spa/account/claims.html",
                 controller: "claimsCtrl"

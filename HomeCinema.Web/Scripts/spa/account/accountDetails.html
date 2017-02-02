@@ -8,7 +8,7 @@
         <div class="col-xs-4"></div>
     </div>
 
-    <!-- Main Content-->
+    <!--Personal details-->
     <div class="col-lg-9" ng-hide="isLoading">
         <div class="panel panel-default">
             <div class="panel-body">
@@ -29,22 +29,6 @@
                     <div class="form-group">
                         <p>Last Name</p>
                         <input type="text" placeholder="Last Name" class="form-control"/>
-                    </div>
-
-
-                    <div class="form-group">
-                        <p>Roles</p>
-                        <div ng-repeat="role in vm.AllRoles">
-                            <input type="checkbox" ng-checked="vm.User.Roles.containsObjectWithProperty('Id', role.Id)" ng-click="toggleSelection(role)"/>
-                            {{role.Name}}
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <p>Claims</p>
-                        <div ng-repeat="claim in vm.User.Claims">
-                            <input type="checkbox" ng-checked="claim" ng-model="claim">{{claim}}
-                        </div>
                     </div>
 
                     <div class="clearfix">
@@ -75,9 +59,70 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <p class="lead">Sidebar</p>
-                <p>Categories...</p>
-                
+                <p>Show profile picture/summary here...</p>
+            </div>
+        </div>
+    </div>
+    
+    <!--Security details-->
+    <div class="col-lg-9" ng-hide="isLoading">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form action="">
+                    <p class="lead">Security</p>
+                    <div class="form-group">
+                        <p>Activation status</p>
+                        <input type="checkbox" ng-checked="true" /> Activated
+                    </div>
+                    <div class="form-group">
+                        <p>Lockout status</p>
+                        <input type="text" placeholder="Email" class="form-control" ng-model="vm.User.Email" />
+                    </div>
+                    <div class="form-group">
+                        <p>First Name</p>
+                        <input type="text" placeholder="First Name" class="form-control" ng-model="vm.User.Firstname" />
+                    </div>
+                    <div class="form-group">
+                        <p>Last Name</p>
+                        <input type="text" placeholder="Last Name" class="form-control" ng-model="vm.User.Lastname" />
+                    </div>
 
+
+                    <div class="form-group">
+                        <p>Roles</p>
+                        <div ng-repeat="role in vm.AllRoles">
+                            <input type="checkbox" ng-checked="vm.User.Roles.containsObjectWithProperty('Id', role.Id)" ng-click="toggleSelection(role)" />
+                            {{role.Name}}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p>Claims</p>
+                        <div ng-repeat="claim in vm.User.Claims">
+                            <input type="checkbox" ng-checked="claim" ng-model="claim">{{claim}}
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                        <div class="pull-right">
+                            <!--<button type="button" class="btn btn-default m-r-10 m-t-10">
+                                <em class="fa fa-edit fa-fw"></em>Edit
+                            </button>-->
+                            <button type="button" class="btn btn-primary m-t-10" ng-hide="IsAdding" ng-click="saveAccount()">
+                                <em class="fa fa-check fa-fw"></em>Save
+                            </button>
+
+                            <button type="button" class="btn btn-primary m-t-10" ng-show="IsAdding" ng-click="addAccount()">
+                                <em class="fa fa-check fa-fw"></em>Add User
+                            </button>
+                        </div>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-danger m-r-10 m-t-10" ng-hide="IsAdding" ng-click="deleteAccount()">
+                                <em class="fa fa-trash fa-fw"></em>Remove
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

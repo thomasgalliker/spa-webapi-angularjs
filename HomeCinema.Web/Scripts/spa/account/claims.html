@@ -60,11 +60,12 @@
 
             <tbody>
                 <tr ng-repeat="claim in vm.Claims | orderBy:sortType:sortReverse | filter:searchClaim">
-                    <td>{{ claim.ClaimValue }}</td>
+                    <td><strong>{{ claim.ClaimValue }}</strong></td>
                     <td>{{ claim.Description }}</td>
 
                     <td ng-repeat="role in vm.AllRoles | orderBy:sortType:sortReverse | filter:searchClaim">
-                        <input type="checkbox" ng-checked="claim.Roles.containsObjectWithProperty('Id', role.Id)" />
+                        <input ng-show="vm.IsEditing" type="checkbox" ng-checked="claim.Roles.containsObjectWithProperty('Id', role.Id)" ng-click="toggleSelection(claim, role)"/>
+                        <fa-check ng-hide="vm.IsEditing" is-checked="{{claim.Roles.containsObjectWithProperty('Id', role.Id)}}"></fa-check>
                     </td>
 
                     <td class="tooltip-demo" style="align-content: center; width:200px">
@@ -75,6 +76,17 @@
             </tbody>
 
         </table>
+
+        <div class="clearfix">
+            <div class="pull-right">
+                <button type="button" class="btn btn-default m-r-10 m-t-10" ng-hide="vm.IsEditing" ng-click="editClaims()">
+                    <em class="fa fa-edit fa-fw"></em>Edit
+                </button>
+                <button type="button" class="btn btn-primary m-t-10" ng-show="vm.IsEditing" ng-click="saveClaims()">
+                    <em class="fa fa-check fa-fw"></em>Save
+                </button>
+            </div>
+        </div>
     </div>
     <!-- /.col-lg-12 -->
 </div>
