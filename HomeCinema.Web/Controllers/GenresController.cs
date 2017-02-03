@@ -12,7 +12,7 @@ using HomeCinema.Web.Models;
 
 namespace HomeCinema.Web.Controllers
 {
-    [AuthorizeRole(Roles.SystemAdmin)]
+    [AuthorizeRole(Roles.SystemAdministrator)]
     [RoutePrefix("api/genres")]
     public class GenresController : ApiControllerBase
     {

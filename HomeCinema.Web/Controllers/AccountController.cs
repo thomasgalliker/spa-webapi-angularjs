@@ -16,7 +16,7 @@ using Tracing;
 
 namespace HomeCinema.Web.Controllers
 {
-    [AuthorizeRole(Roles.SystemAdmin)]
+    [AuthorizeRole(Roles.SystemAdministrator)]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiControllerBase
     {

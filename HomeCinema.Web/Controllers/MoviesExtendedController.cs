@@ -15,7 +15,7 @@ using HomeCinema.Web.Models;
 
 namespace HomeCinema.Web.Controllers
 {
-    [AuthorizeRole(Roles.SystemAdmin)]
+    [AuthorizeRole(Roles.SystemAdministrator)]
     [RoutePrefix("api/moviesextended")]
     public class MoviesExtendedController : ApiControllerBaseExtended
     {
