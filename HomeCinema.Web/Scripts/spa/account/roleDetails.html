@@ -9,6 +9,8 @@
     </div>
 
     <!--Role details-->
+  
+
     <div class="col-lg-9" ng-hide="isLoading">
         <div class="panel panel-default">
             <div class="panel-body">
@@ -16,66 +18,66 @@
                     <legend>{{IsAdding ? 'Add New Role' : 'Edit Role'}}</legend>
 
                     <div class="form-horizontal" novalidate>
-                        <div class="row">
+                        <fieldset>
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="rolename">Role Name</label>
+                                    <label class="col-sm-2 control-label">User Name</label>
                                     <div class="col-sm-10">
-                                        <input name="rolename" tabindex="3" id="rolename" type="text" ng-disabled="!IsAdding" class="form-control input" ng-model="vm.Role.Name" maxlength="200">
+                                        <input class="form-control form-control-rounded" type="text" ng-disabled="!IsAdding" ng-model="vm.Role.Name" maxlength="200">
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
+                        </fieldset>
+                        <fieldset>
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="decription">Description</label>
+                                    <label class="col-sm-2 control-label">Description</label>
                                     <div class="col-sm-10">
-                                        <input name="decription" tabindex="3" id="decription" type="text" class="form-control input" ng-model="vm.Role.Description" maxlength="200">
+                                        <input class="form-control form-control-rounded" type="text" ng-model="vm.Role.Description" maxlength="200">
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Claims</label>
+                                    <div class="col-sm-10">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                                <tr ng-repeat="claim in vm.AllClaims ">
+                                                    <td>
+                                                        <div class="checkbox c-checkbox">
+                                                            <label>
+                                                                <input type="checkbox" ng-checked="vm.Role.Claims.containsObjectWithProperty('Id', claim.Id)" ng-click="toggleSelection(claim)" />
+                                                                <span class="fa fa-check"></span>
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                    <td><strong>{{ claim.ClaimValue }}</strong></td>
+                                                    <td>{{ claim.Description }}</td>
+                                                </tr>
+                                            </tbody>
 
-                    <legend>Claims</legend>
-                    <table class="table table-bordered table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <td></td>
-                                <td>Claim Name</td>
-                                <td>Description</td>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr ng-repeat="claim in vm.AllClaims | orderBy:sortType:sortReverse | filter:searchClaim">
-                                <td><input type="checkbox" ng-checked="vm.Role.Claims.containsObjectWithProperty('Id', claim.Id)" ng-click="toggleSelection(claim)" /></td>
-                                <td><strong>{{ claim.ClaimValue }}</strong></td>
-                                <td>{{ claim.Description }}</td>
-                            </tr>
-                        </tbody>
-
-                    </table>
-
-                    <div class="clearfix">
-                        <div class="pull-right">
-                            <!--<button type="button" class="btn btn-default m-r-10 m-t-10">
-                                <em class="fa fa-edit fa-fw"></em>Edit
-                            </button>-->
-                            <button type="button" class="btn btn-primary m-t-10" ng-hide="IsAdding" ng-click="saveRole()">
-                                <em class="fa fa-check fa-fw"></em>Save
-                            </button>
-
-                            <button type="button" class="btn btn-primary m-t-10" ng-show="IsAdding" ng-click="addRole()">
-                                <em class="fa fa-check fa-fw"></em>Add Role
-                            </button>
-                        </div>
-                        <div class="pull-right">
-                            <button type="button" class="btn btn-danger m-r-10 m-t-10" ng-hide="IsAdding" ng-click="deleteRole()">
-                                <em class="fa fa-trash fa-fw"></em>Remove
-                            </button>
-                        </div>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-sm-offset-2">
+                                            <button type="submit" class="btn btn-default" ng-click='back()'>Cancel</button>
+                                            <button type="submit" class="btn btn-primary" ng-hide="IsAdding" ng-click="saveRole()">
+                                                <em class="fa fa-check fa-fw"></em>Save changes
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
                 </form>
             </div>
