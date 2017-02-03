@@ -63,6 +63,7 @@ namespace HomeCinema.Web.Mappings
                 .ForMember(dest => dest.Id, map => map.MapFrom(src => src.ID))
                 .ForMember(dest => dest.Name, map => map.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Description, map => map.MapFrom(src => src.Description))
+                .ForMember(dest => dest.IsSystemDefault, map => map.MapFrom(src => src.IsSystemDefault))
                 .ForMember(dest => dest.Claims, map => map.MapFrom(src => src.RoleClaims.Select(rc => rc.Claim)))
                 .ReverseMap()
                 .ForMember(dest => dest.ID, map => map.MapFrom(src => src.Id))

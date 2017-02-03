@@ -15,6 +15,8 @@ namespace HomeCinema.Web.Models
 
         public string Description { get; set; }
 
+        public bool IsSystemDefault { get; set; }
+
         public ICollection<ClaimViewModel> Claims { get; set; }
     }
 }
