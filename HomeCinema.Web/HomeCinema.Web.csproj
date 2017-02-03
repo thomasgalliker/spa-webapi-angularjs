@@ -20,7 +20,6 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
-    <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
     <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -118,8 +117,9 @@
       <HintPath>..\packages\Tracing.Integration.Autofac.1.0.0-pre1\lib\portable-net45+dnxcore50+wp80+wpa81+win81+netcore45+monoandroid10+monotouch10+xamarin.ios10\Tracing.Integration.Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebGrease">
-      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -156,13 +156,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\homecinema.sql" />
+    <Content Include="Content\css\app-rtl.css" />
+    <Content Include="Content\css\app.css" />
     <Content Include="Content\css\blank.gif" />
+    <Content Include="Content\css\bootstrap-rtl.css" />
     <Content Include="Content\css\bootstrap-theme.css" />
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\fancybox_overlay.png" />
     <Content Include="Content\css\fancybox_sprite.png" />
     <Content Include="Content\css\loading-bar.css" />
+    <Content Include="Content\css\theme-a.css" />
+    <Content Include="Content\css\theme-b.css" />
+    <Content Include="Content\css\theme-c.css" />
+    <Content Include="Content\css\theme-d.css" />
+    <Content Include="Content\css\theme-e.css" />
+    <Content Include="Content\css\theme-f.css" />
+    <Content Include="Content\css\theme-g.css" />
+    <Content Include="Content\css\theme-h.css" />
     <Content Include="Content\images\background.jpg" />
     <Content Include="Content\images\raty\star-half-big.png" />
     <Content Include="Content\images\raty\star-half.png" />
@@ -178,6 +189,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\spa\account\claims.html" />
+    <Content Include="Scripts\spa\account\roleDetails.html" />
+    <Content Include="Scripts\spa\account\roleDetailsCtrl.js" />
     <Content Include="Scripts\spa\account\roles.html" />
     <Content Include="Scripts\spa\account\claimsCtrl.js" />
     <Content Include="Scripts\spa\account\users.html" />
@@ -192,6 +205,8 @@
     <Content Include="Scripts\spa\customers\customerEditCtrl.js" />
     <Content Include="Scripts\spa\customers\customersRegCtrl.js" />
     <Content Include="Scripts\spa\customers\editCustomerModal.html" />
+    <Content Include="Scripts\spa\directives\faCheck.directive.js" />
+    <Content Include="Scripts\spa\directives\faCheck.html" />
     <Content Include="Scripts\spa\directives\userStatus.html" />
     <Content Include="Scripts\spa\directives\userStatus.directive.js" />
     <Content Include="Scripts\spa\directives\availableMovie.html" />
