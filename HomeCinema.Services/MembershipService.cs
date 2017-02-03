@@ -148,10 +148,10 @@ namespace HomeCinema.Services
         public void UpdateUser(User user, User updateUser)
         {
             // Update scalar properties
-            user.Username = updateUser.Username;
             user.Email = updateUser.Email;
             user.Firstname = updateUser.Firstname;
             user.Lastname = updateUser.Lastname;
+            user.IsLocked = updateUser.IsLocked;
 
             // Upate roles and claims
             var newRoleIds = updateUser.UserRoles.Select(ur => ur.RoleId).ToList();
@@ -159,6 +159,12 @@ namespace HomeCinema.Services
             {
                 if (!newRoleIds.Contains(userRole.RoleId))
                 {
+                    // Cannot remove system default user-role assignment
+                    if (user.IsSystemDefault && userRole.IsSystemDefault && userRole.Role.IsSystemDefault)
+                    {
+                        continue;
+                    }
+
                     this.userRoleRepository.Remove(userRole);
                     user.UserRoles.Remove(userRole);
                 }
@@ -222,6 +228,12 @@ namespace HomeCinema.Services
             {
                 if (!newClaimIds.Contains(roleClaim.ClaimId))
                 {
+                    // Cannot remove system default role-claim assignment
+                    if (role.IsSystemDefault && roleClaim.IsSystemDefault && roleClaim.Claim.IsSystemDefault)
+                    {
+                        continue;
+                    }
+
                     this.roleClaimRepository.Remove(roleClaim);
                     role.RoleClaims.Remove(roleClaim);
                 }

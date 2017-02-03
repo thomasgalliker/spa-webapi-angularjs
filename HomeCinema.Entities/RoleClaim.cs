@@ -1,6 +1,6 @@
 ﻿namespace HomeCinema.Entities
 {
-    public class RoleClaim : IEntityBase
+    public class RoleClaim : IEntityBase, ISystemDefault
     {
         public int ID { get; set; }
 
@@ -11,6 +11,8 @@
         public int ClaimId { get; set; }
 
         public virtual Claim Claim { get; set; }
+
+        public bool IsSystemDefault { get; set; }
 
         //public DateTime? ValidFrom { get; set; }
 

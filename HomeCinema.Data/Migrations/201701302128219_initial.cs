@@ -77,7 +77,9 @@ namespace HomeCinema.Data.Migrations
                             Status = c.String(nullable: false, maxLength: 10),
                         }).PrimaryKey(t => t.ID).ForeignKey("dbo.Stock", t => t.StockId, cascadeDelete: true).Index(t => t.StockId);
 
-            this.CreateTable("dbo.RoleClaim", c => new { ID = c.Int(nullable: false, identity: true), RoleId = c.Int(nullable: false), ClaimId = c.Int(nullable: false), })
+            this.CreateTable(
+                    "dbo.RoleClaim",
+                    c => new { ID = c.Int(nullable: false, identity: true), RoleId = c.Int(nullable: false), ClaimId = c.Int(nullable: false), IsSystemDefault = c.Boolean(nullable: false), })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Claim", t => t.ClaimId, cascadeDelete: true)
                 .ForeignKey("dbo.Role", t => t.RoleId, cascadeDelete: true)
@@ -95,7 +97,9 @@ namespace HomeCinema.Data.Migrations
                             IsSystemDefault = c.Boolean(nullable: false),
                         }).PrimaryKey(t => t.ID);
 
-            this.CreateTable("dbo.UserRole", c => new { ID = c.Int(nullable: false, identity: true), UserId = c.Int(nullable: false), RoleId = c.Int(nullable: false), })
+            this.CreateTable(
+                    "dbo.UserRole",
+                    c => new { ID = c.Int(nullable: false, identity: true), UserId = c.Int(nullable: false), RoleId = c.Int(nullable: false), IsSystemDefault = c.Boolean(nullable: false), })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Role", t => t.RoleId, cascadeDelete: true)
                 .ForeignKey("dbo.User", t => t.UserId, cascadeDelete: true)

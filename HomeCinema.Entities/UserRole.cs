@@ -1,9 +1,6 @@
 ﻿namespace HomeCinema.Entities
 {
-    /// <summary>
-    ///     HomeCinema User's Role
-    /// </summary>
-    public class UserRole : IEntityBase
+    public class UserRole : IEntityBase, ISystemDefault
     {
         public int ID { get; set; }
 
@@ -12,5 +9,7 @@
         public int RoleId { get; set; }
 
         public virtual Role Role { get; set; }
+
+        public bool IsSystemDefault { get; set; }
     }
 }

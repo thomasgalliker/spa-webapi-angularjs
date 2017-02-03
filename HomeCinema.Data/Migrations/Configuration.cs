@@ -29,53 +29,12 @@ namespace HomeCinema.Data.Migrations
             // create customers
             context.CustomerSet.AddOrUpdate(this.GenerateCustomers());
 
-            // create roles
+            // Create default users, roles, claims
+            context.UserSet.AddOrUpdate(u => u.Username, Users.Defaults);
             context.RoleSet.AddOrUpdate(r => r.ID, Roles.Defaults);
-
-            // username: chsakell, password: homecinema
-            context.UserSet.AddOrUpdate(
-                u => u.Username,
-                Users.Defaults);
-
-            // create user-admin for chsakell
-            context.UserRoleSet.AddOrUpdate(
-                new UserRole
-                {
-                    RoleId = 1, // admin
-                    UserId = 1 // chsakell
-                });
-
-
-            context.ClaimSet.AddOrUpdate(Claims.All);
-
-            context.RoleClaimSet.AddOrUpdate(
-                new RoleClaim
-                {
-                    RoleId = 1, // admin
-                    ClaimId = 1,
-                },
-                new RoleClaim
-                {
-                    RoleId = 1, // admin
-                    ClaimId = 2,
-                },
-                new RoleClaim
-                {
-                    RoleId = 1, // admin
-                    ClaimId = 3,
-                },
-                new RoleClaim
-                {
-                    RoleId = 1, // admin
-                    ClaimId = 4,
-                });
-
-            context.RoleClaimSet.AddOrUpdate(
-              new RoleClaim
-              {
-                  RoleId = 2, // Rent Admin
-                  ClaimId = 3,
-              });
+            context.UserRoleSet.AddOrUpdate(ur => ur.ID, UserRoles.Defaults);
+            context.ClaimSet.AddOrUpdate(ur => ur.ID, Claims.All);
+            context.RoleClaimSet.AddOrUpdate(rc => rc.ID, RoleClaims.Defaults);
         }
 
         private Genre[] GenerateGenres()
