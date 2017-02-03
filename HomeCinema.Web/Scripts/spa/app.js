@@ -121,6 +121,7 @@
     run.$inject = ['$rootScope', '$location', '$cookieStore', '$http'];
 
     function run($rootScope, $location, $cookieStore, $http) {
+
         // handle page refreshes
         $rootScope.repository = $cookieStore.get('repository') || {};
         if ($rootScope.repository.loggedUser) {

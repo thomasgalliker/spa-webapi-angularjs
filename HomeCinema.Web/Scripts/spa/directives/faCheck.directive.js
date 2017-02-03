@@ -10,8 +10,7 @@
 			link: function ($scope, $element, $attrs) {
 			    $scope.isChecked = function () {
 			        var checked = $scope.$eval($attrs.isChecked);
-			        //var checked = $scope.$eval($attrs.ngChecked);
-			        if (checked === true)
+			        if (checked === true || $attrs.isChecked === 'true')
 				        return true;
 				    else
 				        return false;
