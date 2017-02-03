@@ -74,8 +74,9 @@ namespace HomeCinema.Web.App_Start
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/content/css/site.css",
                 "~/content/css/bootstrap.css",
-                "~/content/css/bootstrap-theme.css",
-                 "~/content/css/font-awesome.css",
+                "~/content/css/theme-a.css",
+                "~/content/css/app.css",
+                "~/content/css/font-awesome.css",
                 "~/content/css/morris.css",
                 "~/content/css/toastr.css",
                 "~/content/css/jquery.fancybox.css",

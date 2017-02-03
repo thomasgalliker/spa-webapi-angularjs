@@ -264,3 +264,7 @@ ul.pagination > li
 .red {
     color: red;
 }
+
+.form-control-rounded {
+  border-radius: 100px;
+}
